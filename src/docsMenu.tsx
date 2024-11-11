@@ -1,15 +1,15 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 export interface DocsMenu {
   title: string;
-  keyName: string;
+  url: string;
   content: ReactNode;
 }
 
 export const docsMenus: Array<DocsMenu> = [
   {
     title: "Getting Started",
-    keyName: "getting-started",
+    url: "getting-started",
     content: (
       <div>
         <h1 className="text-4xl font-bold">Getting Started</h1>
@@ -46,7 +46,7 @@ export const docsMenus: Array<DocsMenu> = [
   },
   {
     title: "Troubleshooting",
-    keyName: "troubleshooting",
+    url: "troubleshooting",
     content: (
       <div>
         <h1 className="text-4xl font-bold">Troubleshooting</h1>

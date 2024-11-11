@@ -4,10 +4,10 @@ import IntellijLogo from "../assets/intellij-logo.webp";
 
 export const IndexPage = () => {
   return (
-    <main className="bg-[#130045] py-16">
+    <main className="bg-[#130045] lg:py-16 md:py-8 py-4">
       <div className="w-100 max-w-[1200px] mx-auto px-4">
         <div id="landing-name">
-          <h1 className="text-white font-bold lg:text-[32px] md:text-[28px] text-[24px] flex flex-row items-center">
+          <h1 className="text-white font-bold lg:text-[2rem] md:text-[1.75rem] text-[1.5rem] flex flex-row items-center">
             <img
               className="h-[45px] w-[45px]"
               alt="intellij-logo"
@@ -17,41 +17,36 @@ export const IndexPage = () => {
           </h1>
         </div>
         <div id="landing-quote" className="mt-2">
-          <h1 className="text-white font-bold lg:text-[56px] md:text-[48px] text-[36px]">
+          <h1 className="text-white font-bold lg:text-[3.5rem] md:text-[3rem] text-[2.25rem]">
             Extracting Code Duplicates
           </h1>
         </div>
         <div id="landing-desc" className="mt-2">
-          <p className="text-white lg:text-[24px] md:text-[20px] text-[18px]">
+          <p className="text-white lg:text-[1.5rem] md:text-[1.25rem] text-[1.125rem]">
             AntiCopyPaster is a plugin for IntelliJ IDEA that tracks the copying
             and pasting carried out by the developer and suggests extracting{" "}
             <b>duplicates</b> into a new method as soon as they are introduced
             in the code.
           </p>
         </div>
-        <div className="flex flex-row gap-2 lg:mt-[45px] mt-[25px]">
-          <Link to="/docs/getting-started">
-            <button className="text-white bg-[#FF6F61] text-[18px] rounded-2xl py-2 px-4">
-              Get Started
-            </button>
-          </Link>
-          <Link to="https://github.com/JetBrains-Research/anti-copy-paster">
-            <button className="text-white bg-[#008080] text-[18px] rounded-2xl py-2 px-4">
-              Read Github
+        <div className="flex flex-row gap-2 lg:mt-[2.8rem] mt-[1.5rem]">
+          <Link to="https://sourceforge.net/projects/anti-copy-paster/">
+            <button className="text-white bg-[#DE2477] text-[20px] rounded-2xl py-2 px-6">
+              Download
             </button>
           </Link>
         </div>
         <div className="mt-[50px] relative">
           <iframe
-            className="w-full h-[50vh]"
-            src="https://www.youtube.com/embed/Y1sbfpds2Ms?si=hunSsFFBj3e8oijM"
+            className="w-full h-[40vw]"
+            src="https://www.youtube.com/embed/_wwHg-qFjJY?si=ETnXtgm5HKi8LJMl"
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           ></iframe>
         </div>
-        <div className="mt-[50px]">
+        <div className="lg:mt-16 md:mt-8 mt-4">
           <h1 className="text-white text-4xl font-bold">
             Why use AntiCopyPasta for refactoring?
           </h1>

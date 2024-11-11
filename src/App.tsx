@@ -2,7 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { IndexPage } from "./pages/IndexPage";
 import { DefaultLayout } from "./components/layout/DefaultLayout";
 import { DocsLayout } from "./components/layout/DocsLayout";
-import { DocsPage } from "./pages/DocsPage";
+import { docsMenus } from "./docsMenu";
+import { DocsNotFound } from "./components/layout/docs/DocsNotFound";
 
 function App() {
   return (
@@ -12,7 +13,10 @@ function App() {
           <Route path="/" element={<IndexPage />} />
         </Route>
         <Route element={<DocsLayout />}>
-          <Route path="/docs/*" element={<DocsPage />} />
+          {docsMenus.map((docsMenu) => (
+            <Route path={`/docs/${docsMenu.url}`} element={docsMenu.content} />
+          ))}
+          <Route path="/docs/*" element={<DocsNotFound />} />
         </Route>
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>

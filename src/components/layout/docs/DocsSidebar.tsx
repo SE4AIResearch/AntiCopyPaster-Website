@@ -11,8 +11,8 @@ export default function DocsSidebar() {
         <DocsMenu
           key={`menu-${index}`}
           title={menu.title}
-          keyName={menu.keyName}
-          isActive={pathname.replace("/docs/", "") == menu.keyName}
+          url={menu.url}
+          isActive={pathname.replace("/docs/", "") == menu.url}
         />
       ))}
     </ul>

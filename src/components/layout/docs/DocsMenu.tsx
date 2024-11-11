@@ -9,14 +9,14 @@ export interface DocsMenu {
 
 interface DocsMenuProps {
   title: string;
-  keyName: string;
+  url: string;
   isActive: boolean;
 }
 
-export const DocsMenu = ({ title, keyName, isActive }: DocsMenuProps) => {
+export const DocsMenu = ({ title, url, isActive }: DocsMenuProps) => {
   return (
     <>
-      <Link to={`/docs/${keyName}`}>
+      <Link to={`/docs/${url}`}>
         <li
           className={`flex flex-row gap-1 px-4 py-[5px] min-w-[280px] items-center${
             isActive ? " bg-blue-600 text-white" : ""
