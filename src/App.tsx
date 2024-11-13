@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { IndexPage } from "./pages/IndexPage";
 import { DefaultLayout } from "./components/layout/DefaultLayout";
 import { DocsLayout } from "./components/layout/DocsLayout";
@@ -8,7 +8,7 @@ import "flowbite";
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path="/" element={<IndexPage />} />
@@ -25,7 +25,7 @@ function App() {
         </Route>
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
