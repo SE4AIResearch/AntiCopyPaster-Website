@@ -37,7 +37,7 @@ export const GithubStat = () => {
 
   return (
     <div className="lg:mt-[2rem] md:mt-[1.75rem] mt-[1.5rem] lg:px-10 md:px-8 px-4 lg:py-8 md:py-6 py-4 rounded-3xl">
-      <h1 className="text-white text-6xl font-bold text-center">
+      <h1 className="text-white text-2xl md:text-4xl lg:text-6xl font-bold text-center">
         Statistics from GitHub
       </h1>
       <p className="text-gray-400 text-xl text-center mt-2">
