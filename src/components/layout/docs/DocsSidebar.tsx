@@ -6,7 +6,7 @@ export default function DocsSidebar() {
   const { pathname } = useLocation();
 
   return (
-    <ul className="py-4 border-r-[1px] border-gray-400 h-[calc(100vh-80px)] hidden md:block">
+    <ul className="py-4 border-r-[1px] border-gray-400 h-full hidden md:block">
       {docsMenus.map((menu, index) => (
         <DocsMenu
           key={`menu-${index}`}
