@@ -4,8 +4,8 @@ import react from "@vitejs/plugin-react";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "/AntiCopyPaster-Website",
   build: {
-    outDir: "./build",
     rollupOptions: {
       output: {
         manualChunks(id) {
