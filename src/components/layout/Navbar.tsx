@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { FiBook, FiDownload, FiGithub } from "react-icons/fi";
+import { RiFilePaper2Line } from "react-icons/ri";
+
 import { Modal } from "./Modal";
 import { MdMenu } from "react-icons/md";
 
@@ -9,7 +11,7 @@ export const Navbar = () => {
       <nav className="max-w-screen-xl flex flex-wrap justify-between mx-auto items-center p-3">
         <div id="navbar-header">
           <Link to="/">
-            <span className="font-bold text-[21px] ml-2">AntiCopyPasta</span>
+            <span className="font-bold text-[21px] ml-2">AntiCopyPaster</span>
           </Link>
         </div>
         <button
@@ -28,6 +30,30 @@ export const Navbar = () => {
                 <div className="flex flex-row gap-2 items-center">
                   <FiBook />
                   <span>Documentation</span>
+                </div>
+              </Link>
+            </li>
+            <li className="topnav-li">
+              <Link to="/publications">
+                <div className="flex flex-row gap-2 items-center">
+                  <RiFilePaper2Line />
+                  <span>Publications</span>
+                </div>
+              </Link>
+            </li>
+            <li className="topnav-li">
+              <Link to="/extractmethod">
+                <div className="flex flex-row gap-2 items-center">
+                  <RiFilePaper2Line />
+                  <span>ExtractMethod</span>
+                </div>
+              </Link>
+            </li>
+            <li className="topnav-li">
+              <Link to="/anticopypaster">
+                <div className="flex flex-row gap-2 items-center">
+                  <RiFilePaper2Line />
+                  <span>AntiCopyPaster</span>
                 </div>
               </Link>
             </li>

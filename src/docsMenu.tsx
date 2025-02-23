@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { AboutDocs } from "./components/layout/docs/pages/AboutDocs";
 import { GettingStartedDocs } from "./components/layout/docs/pages/GettingStartedDocs";
 import { ReleasesDocs } from "./components/layout/docs/pages/ReleasesDocs";
-import { PublicationDocs } from "./components/layout/docs/pages/PublicationDocs";
+import { PublicationDocs } from "./pages/PublicationsPage";
 import { AdvancedSettingDocs } from "./components/layout/docs/pages/AdvancedSettingDocs";
 
 export interface DocsMenu {
@@ -26,11 +26,6 @@ export const docsMenus: Array<DocsMenu> = [
     title: "Releases",
     url: "releases",
     content: <ReleasesDocs />,
-  },
-  {
-    title: "Publications",
-    url: "publications",
-    content: <PublicationDocs />,
   },
   {
     title: "Advanced Settings",
