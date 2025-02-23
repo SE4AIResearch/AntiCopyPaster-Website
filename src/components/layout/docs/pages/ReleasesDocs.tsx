@@ -31,6 +31,14 @@ const releases: Array<{
     githubUrl: "https://github.com/JetBrains-Research/anti-copy-paster",
     demoUrl: "https://www.youtube.com/watch?v=_wwHg-qFjJY&feature=youtu.be",
   },
+  {
+    version: "3.0.0",
+    downloadUrl:
+      "https://sourceforge.net/projects/anti-copy-paster/files/v0.0.0/",
+    websiteUrl: "https://acpf2023.vercel.app/",
+    githubUrl: "https://github.com/refactorings/anti-copy-paster/releases/tag/v3.1.1",
+    demoUrl: "https://www.youtube.com/watch?v=EzfU5trG7Lw",
+  },
 ];
 
 export const ReleasesDocs = () => {

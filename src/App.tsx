@@ -1,10 +1,13 @@
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { IndexPage } from "./pages/IndexPage";
+import { PublicationsPage } from "./pages/PublicationsPage";
 import { DefaultLayout } from "./components/layout/DefaultLayout";
 import { DocsLayout } from "./components/layout/DocsLayout";
 import { docsMenus } from "./docsMenu";
 import { DocsNotFound } from "./components/layout/docs/DocsNotFound";
 import "flowbite";
+import { ExtractMethodPage } from "./pages/ExtractMethodPage";
+import { AntiCopyPasterPage } from "./pages/AntiCopyPasterPage";
 
 function App() {
   return (
@@ -12,6 +15,15 @@ function App() {
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path="/" element={<IndexPage />} />
+        </Route>
+        <Route element={<DefaultLayout />}>
+          <Route path="/publications" element={<PublicationsPage />} />
+        </Route>
+        <Route element={<DefaultLayout />}>
+          <Route path="/extractmethod" element={<ExtractMethodPage />} />
+        </Route>
+        <Route element={<DefaultLayout />}>
+          <Route path="/anticopypaster" element={<AntiCopyPasterPage />} />
         </Route>
         <Route element={<DocsLayout />}>
           {docsMenus.map((docsMenu, index) => (
