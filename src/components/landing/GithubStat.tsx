@@ -4,6 +4,7 @@ interface GithubStat {
   watchCount: number;
   forkCount: number;
   starCount: number;
+  downloads: number;
 }
 
 export const GithubStat = () => {
@@ -11,28 +12,41 @@ export const GithubStat = () => {
     watchCount: 0,
     forkCount: 0,
     starCount: 0,
+    downloads: 0,
   });
 
   useEffect(() => {
     const fetchGithubInfo = async () => {
-      const githubDataResponse = await fetch(
-        "https://api.github.com/repos/JetBrains-Research/anti-copy-paster"
-      );
 
-      const githubData: {
-        forks_count: number;
-        stargazers_count: number;
-        watchers_count: number;
-      } = await githubDataResponse.json();
+      try {
+        const githubDataResponse = await fetch(
+          "https://api.github.com/repos/JetBrains-Research/anti-copy-paster"
+        );
+        const githubData: {
+          forks_count: number;
+          stargazers_count: number;
+          watchers_count: number;
+        } = await githubDataResponse.json();
 
-      setGithubInfo({
-        forkCount: githubData.forks_count,
-        starCount: githubData.stargazers_count,
-        watchCount: githubData.watchers_count,
-      });
+        const currDate = new Date();
+        const sourceForgeDownloadResponse = await fetch(
+          `https://sourceforge.net/projects/anti-copy-paster/files/stats/json?start_date=2023-6-1&end_date=${currDate.getFullYear()}-${currDate.getMonth() + 1}-${currDate.getDay()}`
+        );
+      
+        const sourceForgeDownloadData = await sourceForgeDownloadResponse.json();
+        
+        setGithubInfo({
+          forkCount: githubData.forks_count,
+          starCount: githubData.stargazers_count,
+          watchCount: githubData.watchers_count,
+          downloads: sourceForgeDownloadData.total,
+        });
+      } catch(e) {
+        console.error(e);
+      }
     };
 
-    fetchGithubInfo();
+  fetchGithubInfo();
   }, []);
 
   return (
@@ -45,7 +59,7 @@ export const GithubStat = () => {
         settings.
       </p>
       <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
-        <dl className="grid grid-cols-3 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
+        <dl className="grid grid-cols-4 gap-x-8 gap-y-16 text-center lg:grid-cols-4">
           <div className="mx-auto flex max-w-xs flex-col gap-y-4">
             <dt className="text-base/7 text-white">Forks</dt>
             <dd className="order-first text-3xl font-semibold tracking-tight text-white sm:text-5xl">
@@ -62,6 +76,12 @@ export const GithubStat = () => {
             <dt className="text-base/7 text-white">Watches</dt>
             <dd className="order-first text-3xl font-semibold tracking-tight text-white sm:text-5xl">
               {githubInfo.watchCount}
+            </dd>
+          </div>
+          <div className="mx-auto flex max-w-xs flex-col gap-y-4">
+            <dt className="text-base/7 text-white">Downloads</dt>
+            <dd className="order-first text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+              {githubInfo.downloads}
             </dd>
           </div>
         </dl>
