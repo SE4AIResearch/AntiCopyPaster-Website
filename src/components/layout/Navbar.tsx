@@ -1,11 +1,34 @@
 import { Link } from "react-router-dom";
 import { FiBook, FiDownload, FiGithub } from "react-icons/fi";
 import { RiFilePaper2Line } from "react-icons/ri";
+import { IoMdClose } from "react-icons/io";
 
-import { Modal } from "./Modal";
+import { useState, useEffect, useRef } from "react";
 import { MdMenu } from "react-icons/md";
 
 export const Navbar = () => {
+
+  const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const [modalActive, setModalActive] = useState(false);
+
+  const closeModal = () => {
+    dialogRef.current?.close();
+    setModalActive(false);
+    document.body.style.overflow = "auto";
+  }
+  useEffect(() => {
+    if (!modalActive) return;
+    dialogRef.current?.showModal();
+    document.body.style.overflow = "hidden";
+
+    dialogRef.current?.addEventListener('close', closeModal);
+
+    return () => {
+      dialogRef.current?.addEventListener('close', closeModal);
+    }
+    
+  }, [modalActive]);
+
   return (
     <header className="bg-[#27282c] text-white">
       <nav className="max-w-screen-xl flex flex-wrap justify-between mx-auto items-center p-3">
@@ -75,48 +98,65 @@ export const Navbar = () => {
             </li>
             <li className="topnav-li">
               <button
-                data-modal-toggle="contact-us-modal"
-                data-modal-target="contact-us-modal"
+                onClick={() => setModalActive(true)}
                 className="mx-auto text-[16px] bg-blue-600 text-white px-4 py-2 rounded-xl"
               >
                 Contact Us
               </button>
-              <Modal targetID="contact-us-modal" title="Contact Us">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="contact-name" className="text-black">
-                    Name
-                  </label>
-                  <input
-                    id="contact-name"
-                    type="text"
-                    className="text-black rounded-md"
-                  />
-                  <label htmlFor="contact-email" className="text-black">
-                    Email Address
-                  </label>
-                  <input
-                    id="contact-email"
-                    type="email"
-                    className="text-black rounded-md"
-                  />
-                  <label htmlFor="contact-subject" className="text-black">
-                    Subject
-                  </label>
-                  <input
-                    id="contact-subject"
-                    type="text"
-                    className="text-black rounded-md"
-                  />
-                  <label htmlFor="contact-message" className="text-black">
-                    Message
-                  </label>
-                  <textarea
-                    id="contact-messsage"
-                    rows={3}
-                    className="text-black rounded-md"
-                  />
+                <dialog 
+                  ref={dialogRef}
+                  className="relative rounded-3xl overflow-visible backdrop:bg-black/50"
+                >
+                 <div className="relative z-0 w-[120vh] h-[100vh] flex flex-col gap-4 p-6 bg-slate-200 rounded-lg shadow-lg">
+                  <p>
+                    This research on Extract Method Refactoring, along with the implementation of the code duplicates refactoring extraction tool, was performed by the faculty and students of Stevens Institute of Technology, Rochester Institute of Technology, University of Michigan-Flint in collaboration with JetBrains Research.
+                  </p>
+                  <p className="mb-5">
+                    We invite fellow researchers and software engineers to provide us with feedback and extensions on our research and tool. Please feel free to reach out with your feedback or questions. Your message will be emailed to:
+                  </p>
+                  <p>Eman Abdullah AlOmar (ealomar@stevens.edu)</p>
+                  <p>Mohamed Wiem Mkaouer (mmkaouer@umich.edu)</p>
+
+                  <form id="contact-form" className="p-6 w-full flex flex-col gap-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="flex flex-col">
+                        <label htmlFor="contact-name" className="text-gray-700 font-medium">Name</label>
+                        <input id="contact-name" type="text" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                      </div>
+                      <div className="flex flex-col">
+                        <label htmlFor="contact-email" className="text-gray-700 font-medium">Email</label>
+                        <input id="contact-email" type="email" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label htmlFor="contact-subject" className="text-gray-700 font-medium">Subject</label>
+                      <input id="contact-subject" type="text" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label htmlFor="contact-message" className="text-gray-700 font-medium">Message</label>
+                      <textarea id="contact-message" rows={4} className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
+
+                    <button 
+                      type="submit" 
+                      className="bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition duration-200"
+                      onClick={closeModal}
+                      >
+                      Submit
+                    </button>
+                  </form>
                 </div>
-              </Modal>
+
+                  <button
+                    className="bg-zinc-200 text-black py-2 px-2 rounded-full absolute -top-4 -right-4 z-1"
+                    onClick={closeModal}
+                  >
+                    <IoMdClose />
+                  </button>
+                </dialog> 
+             
             </li>
           </ul>
         </div>
