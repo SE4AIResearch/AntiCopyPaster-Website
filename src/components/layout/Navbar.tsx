@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { FiBook, FiDownload, FiGithub } from "react-icons/fi";
 import { RiFilePaper2Line } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
-
+import { MdOutlineInbox } from "react-icons/md";
+import { HiOutlineTerminal } from "react-icons/hi";
 import { useState, useEffect, useRef } from "react";
 import { MdMenu } from "react-icons/md";
 
@@ -67,7 +68,7 @@ export const Navbar = () => {
             <li className="topnav-li">
               <Link to="/extractmethod">
                 <div className="flex flex-row gap-2 items-center">
-                  <RiFilePaper2Line />
+                  <HiOutlineTerminal />
                   <span>ExtractMethod</span>
                 </div>
               </Link>
@@ -75,7 +76,7 @@ export const Navbar = () => {
             <li className="topnav-li">
               <Link to="/anticopypaster">
                 <div className="flex flex-row gap-2 items-center">
-                  <RiFilePaper2Line />
+                  <MdOutlineInbox />
                   <span>AntiCopyPaster</span>
                 </div>
               </Link>
