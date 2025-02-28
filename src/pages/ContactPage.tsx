@@ -2,10 +2,11 @@
 
 export const ContactPage = () => {
 
-    const sendEmail = async (e) => {
+    const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-    
-        const formData = new FormData(e.target);
+        
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
     
         const response = await fetch("https://formspree.io/f/myzkrzwv", {
             method: "POST",
@@ -15,7 +16,7 @@ export const ContactPage = () => {
     
         if (response.ok) {
             alert("Email sent successfully!");
-            e.target.reset(); 
+            form.reset(); 
         } else {
             alert("Failed to send email. Please try again.");
         }

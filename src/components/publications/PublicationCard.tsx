@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import { Modal } from "../layout/Modal";
-import { FiClipboard } from "react-icons/fi";
 
 interface PublicationCardProps {
   title: string;
