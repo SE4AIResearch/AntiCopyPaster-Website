@@ -85,7 +85,7 @@ export const PublicationsPage = () => {
     dialogRef.current?.showModal();
     document.body.style.overflow = "hidden";
 
-    const scrollContainer = dialogRef.current?.querySelector("div");
+    const scrollContainer = document.getElementById("scrollContainer");
     if (scrollContainer) {
         scrollContainer.scrollLeft = 0;
     }
@@ -96,18 +96,45 @@ export const PublicationsPage = () => {
       dialogRef.current?.addEventListener('close', closeModal);
     }
     
-
   }, [citationIndex])
 
-  
+
+  const copyCitation = () => {
+    
+    if (citationIndex == null) return;
+    navigator.clipboard.writeText(publications[citationIndex].citation);
+    alert("Citation has been copied");
+
+  }
+  const downloadCitation = () => {
+    if (citationIndex == null) return;
+
+    const element = document.createElement("a");
+    const file = new Blob([publications[citationIndex].citation], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = "citation.txt";
+    element?.click();
+
+  }
   return (
     <>
       <dialog 
         ref={dialogRef}
         className="fixed p-10 rounded-xl overflow-visible backdrop:bg-black/50"
       >
-        <div className="relative w-[100%] sm:w-[40vw] overflow-x-scroll sm:overflow-x-scroll">
+        <div id="citation-scroll-container" className="relative w-[100%] sm:w-[40vw] overflow-x-scroll sm:overflow-x-scroll">
          { citationIndex != null && <pre>{publications[citationIndex].citation}</pre>}
+        </div>
+        <div className="flex flex-row justify-end">
+          <button 
+            className="publication-redirect-button mx-5"
+            onClick={()=> copyCitation()}
+            >Copy</button>
+          <button 
+            id="download-citation-button"
+            className="publication-redirect-button"
+            onClick={()=> downloadCitation()}
+          >Download</button>
         </div>
         <button
           className="bg-zinc-200 text-black py-2 px-2 rounded-full absolute -top-4 -right-4 z-1"
@@ -117,7 +144,7 @@ export const PublicationsPage = () => {
         </button>
       </dialog>
       <h1 className="docs-header">Publications</h1>
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-[20px]">
         <div className="mt-4 flex flex-col gap-4 w-[65%]">
             {publications.map(({ title, docsUrl, datasetUrl }, index) => (
               <PublicationCard
