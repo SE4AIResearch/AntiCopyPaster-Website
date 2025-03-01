@@ -40,26 +40,6 @@ export const AboutDocs = () => {
           F-score of 82%.
         </p>
       </div>
-      <h2 className="font-semibold text-[24px] mt-8 text-center">
-        Contact and Discussion
-      </h2>
-      <p className="mt-4">
-        We invite fellow researchers and software engineers to provide us with
-        feedback and extensions on our research and tool. Please feel free to
-        reach out to the following individuals with your feedback or questions:
-      </p>
-      <p className="mt-4">
-        For questions or suggestions, please contact us via email at{" "}
-        <a className="text-blue-600" href="mailto:ealomar@stevens.edu">
-          ealomar@stevens.edu
-        </a>{" "}
-        and{" "}
-        <a className="text-blue-600" href="mailto:mwmvse@rit.edu">
-          mwmvse@g.rit.edu
-        </a>
-        . To keep up with development, ask questions, or get involved with the
-        conversation, join our discord.
-      </p>
     </div>
   );
 };
