@@ -23,7 +23,7 @@ export const ContactPage = () => {
     };
 
     return (<>
-        <div className="bg-slate-200 h-[100vh] px-[50px] flex flex-col items-center">
+        <div className="px-[50px] flex flex-col items-center">
 
          <div className="relative z-0 flex flex-col gap-4 p-6 justify-center">
             <p>
@@ -39,23 +39,19 @@ export const ContactPage = () => {
         <form id="contact-form" className="p-6 w-full flex flex-col gap-4" onSubmit={sendEmail}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col">
-                    <label htmlFor="contact-name" className="text-gray-700 font-medium">Name</label>
-                    <input id="contact-name" name="name" type="text" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                    <input placeholder="Name" id="contact-name" name="name" type="text" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="contact-email" className="text-gray-700 font-medium">Email</label>
-                    <input id="contact-email" name="email" type="email" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                    <input placeholder="Email" id="contact-email" name="email" type="email" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                 </div>
             </div>
 
             <div className="flex flex-col">
-                <label htmlFor="contact-subject" className="text-gray-700 font-medium">Subject</label>
-                <input id="contact-subject" name="subject" type="text" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                <input placeholder="Subject" id="contact-subject" name="subject" type="text" className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
             </div>
 
             <div className="flex flex-col">
-                <label htmlFor="contact-message" className="text-gray-700 font-medium">Message</label>
-                <textarea id="contact-message" name="message" rows={4} className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+                <textarea placeholder="Message" id="contact-message" name="message" rows={4} className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
             </div>
 
             <button 
