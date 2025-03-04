@@ -23,9 +23,9 @@ export const ContactPage = () => {
     };
 
     return (<>
-        <div className="px-[50px] flex flex-col items-center">
+        <div className="px-[50px] flex flex-col items-center w-full max-w-[800px] mx-auto gap-8">
 
-         <div className="relative z-0 flex flex-col gap-4 p-6 justify-center">
+         <div className="relative z-0 flex flex-col gap-4 m-6 justify-center">
             <p>
             This research on Extract Method Refactoring, along with the implementation of the code duplicates refactoring extraction tool, was performed by the faculty and students of Stevens Institute of Technology, Rochester Institute of Technology, University of Michigan-Flint in collaboration with JetBrains Research.
             </p>
@@ -35,7 +35,7 @@ export const ContactPage = () => {
             <p>Eman Abdullah AlOmar (ealomar@stevens.edu)</p>
             <p>Mohamed Wiem Mkaouer (mmkaouer@umich.edu)</p>
         </div>
-        <div className="w-[100%] sm:w-[60%]">
+     
         <form id="contact-form" className="p-6 w-full flex flex-col gap-4" onSubmit={sendEmail}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col">
@@ -62,6 +62,5 @@ export const ContactPage = () => {
         </form>
 
             </div>
-        </div>
     </>)
 }

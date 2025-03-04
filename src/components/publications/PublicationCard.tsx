@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 interface PublicationCardProps {
   title: string;
   docsUrl: string;
+  preprintUrl: string;
   datasetUrl: string;
   index: number;
   setCitationIndex: React.Dispatch<React.SetStateAction<number | null>>;
@@ -10,6 +11,7 @@ interface PublicationCardProps {
 export const PublicationCard = ({
   title,
   docsUrl,
+  preprintUrl,
   datasetUrl,
   index,
   setCitationIndex,
@@ -22,6 +24,9 @@ export const PublicationCard = ({
       <div className="mt-4 flex flex-row gap-2">
         <Link to={docsUrl} target="_blank">
           <button className="publication-redirect-button">Publication</button>
+        </Link>
+        <Link to={preprintUrl} target="_blank">
+          <button className="publication-redirect-button">Preprint</button>
         </Link>
         <Link to={datasetUrl} target="_blank">
           <button className="publication-redirect-button">Dataset</button>

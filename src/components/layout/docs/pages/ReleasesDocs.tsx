@@ -20,7 +20,7 @@ const releases: Array<{
     downloadUrl:
       "https://sourceforge.net/projects/anti-copy-paster/files/v0.0.0/",
     websiteUrl: "https://refactorings.github.io/anticopypaster_sp_site/",
-    githubUrl: "https://github.com/JetBrains-Research/anti-copy-paster",
+    githubUrl: "https://github.com/refactorings/anti-copy-paster/releases/tag/v1.0.0",
     demoUrl: "https://www.youtube.com/watch?v=_wwHg-qFjJY&feature=youtu.be",
   },
   {
@@ -28,8 +28,8 @@ const releases: Array<{
     downloadUrl:
       "https://sourceforge.net/projects/anti-copy-paster/files/v0.0.0/",
     websiteUrl: "https://se4airesearch.github.io/AntiCopyPaster_Summer2023/",
-    githubUrl: "https://github.com/JetBrains-Research/anti-copy-paster",
-    demoUrl: "https://www.youtube.com/watch?v=_wwHg-qFjJY&feature=youtu.be",
+    githubUrl: "https://github.com/refactorings/anti-copy-paster/releases/tag/v2.0.0",
+    demoUrl: "https://www.youtube.com/watch?v=Y1sbfpds2Ms",
   },
   {
     version: "3.0.0",
