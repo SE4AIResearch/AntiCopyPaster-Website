@@ -5,7 +5,7 @@ export const GettingStartedDocs = () => {
       <h3 className="text-2xl mt-4">How to install</h3>
       <p className="mt-2">
         <b>
-          AntiCopyPaster requires IntelliJ IDEA of version 2022.3 to work. To
+          AntiCopyPaster requires IntelliJ IDEA of version 2024.1.1 to work. To
           install the plugin
         </b>
         :
