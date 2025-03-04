@@ -46,18 +46,18 @@ export const Navbar = () => {
               <Link to="/extractmethod">
                 <div className="flex flex-row gap-2 items-center">
                   <HiOutlineTerminal />
-                  <span>ExtractMethod</span>
+                  <span>Extract Method</span>
                 </div>
               </Link>
             </li>
-            <li className="topnav-li">
+            {/* <li className="topnav-li">
               <Link to="/anticopypaster">
                 <div className="flex flex-row gap-2 items-center">
                   <MdOutlineInbox />
                   <span>AntiCopyPaster</span>
                 </div>
               </Link>
-            </li>
+            </li> */}
             <li className="topnav-li">
               <Link to="https://sourceforge.net/projects/anti-copy-paster/">
                 <div className="flex flex-row gap-2 items-center">
