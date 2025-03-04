@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FiBook, FiDownload, FiGithub } from "react-icons/fi";
 import { RiFilePaper2Line } from "react-icons/ri";
-import { MdOutlineInbox } from "react-icons/md";
+// import { MdOutlineInbox } from "react-icons/md";
 import { HiOutlineTerminal } from "react-icons/hi";
 import { MdMenu } from "react-icons/md";
 
