@@ -77,7 +77,7 @@ export const IndexPage = () => {
         <GithubStat />
         <div className="lg:mt-[4rem] md:mt-[3.5rem] mt-[3.25rem]">
           <h1 className="text-white text-4xl font-bold">
-            Why use AntiCopyPasta for refactoring?
+            Why use AntiCopyPaster for refactoring?
           </h1>
           <p className="mt-[1.5rem] text-white lg:text-[1.2rem] md:text-[1.1rem] text-[1rem]">
             Refactoring is the practice of improving software quality without
