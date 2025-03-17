@@ -3,6 +3,10 @@ import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import  timeline from '../assets/extractmethod-timeline.png';
 import cloneTypes from '../assets/extractmethod-clone-types.png';
 import relationships from '../assets/extractmethod-relationships.png'
+import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa6";
+
+
 const getNextBeforeRefactor = `
     public Result getNext(Databag db) throws ExecException {
         List<ExpressionOperator> l = new ArrayList<ExpressionOperator>();
@@ -164,7 +168,7 @@ export const ExtractMethodPage = () => {
 
                     <div className="w-[70%] h-auto mx-auto mt-[100px]">
                         <img alt="Clone Types Diagram" src={cloneTypes}/>
-                        <p className="ml-2">Fig. 2. Examples of various clone types[1]</p>
+                        <p className="ml-2">Fig. 2. Examples of various clone types [1]</p>
                         <p className="ml-2">[1] Roy, Chanchal K., James R. Cordy, and Rainer Koschke. "Comparison and evaluation of code clone detection techniques and tools: A qualitative approach." Science of Computer Programming 74.7 (2009): 470-495.</p>
                     </div>
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
@@ -200,9 +204,31 @@ export const ExtractMethodPage = () => {
                         <li>Text (7.2%)</li>
                     </ul>
                 
-                    <div className="w-[70%] h-auto mx-auto mt-[100px]">
+                    <div className="mx-auto mt-[100px] mb-[200px]">
                         <img alt="Extract Method relationships" src={relationships}/>
                         <p className="ml-2">Fig. 3. The relationship among the intent, code analysis, representation, detection, execution, and validation method of the Extract Method refactoring.</p>
+                    </div>
+
+
+                    <div className="flex w-[80%] mx-auto">
+                        <div className="w-1/2">
+                            <p>Interested and want to learn more?</p>
+                            <p>Read the full literature review <a className="text-blue-600" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10381511" target="_blank">here</a>.</p>
+                            <p>See our other publications <Link className="text-blue-600" to="/publications">here</Link>.</p>
+                            <br/>
+                            <p>Questions or concerns?</p>
+                            <p>Feel free to contact us <Link className="text-blue-600" to="/contact">here</Link>.</p>
+                        </div>
+                        <div className="w-1/2 flex items-end ">
+                            <div className="flex justify-between items-center w-[80%] h-[55%] border border-1 border-black rounded-md p-5">
+                                <div>
+                                    <p className="text-gray-500">Next up:</p>
+                                    <p>AntiCopyPaster</p>
+                                </div>
+                                <Link to="/anticopypaster"><FaArrowRight /></Link>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
