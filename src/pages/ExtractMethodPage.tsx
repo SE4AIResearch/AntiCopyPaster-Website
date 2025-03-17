@@ -5,7 +5,9 @@ import cloneTypes from '../assets/extractmethod-clone-types.png';
 import relationships from '../assets/extractmethod-relationships.png'
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa6";
-
+import { FaRegFileAlt } from "react-icons/fa";
+import { FaAngleDoubleUp } from "react-icons/fa";
+import { useRef, type RefObject, useState, useEffect} from 'react';
 
 const getNextBeforeRefactor = `
     public Result getNext(Databag db) throws ExecException {
@@ -94,11 +96,67 @@ const getNextAfterRefactor = `
     
     `;
 export const ExtractMethodPage = () => {
-    
+    const extractMethodRef = useRef<HTMLDivElement>(null);
+    const slrRef = useRef<HTMLDivElement>(null);
+    const codeCloneRef = useRef<HTMLDivElement>(null);
+    const longMethodRef = useRef<HTMLDivElement>(null);
+    const separationConcernsRef = useRef<HTMLDivElement>(null);
+    const codeRef = useRef<HTMLDivElement>(null);
+
+    const scrollToRef = (ref: RefObject<HTMLElement>) => {
+        ref?.current?.scrollIntoView({ behavior: "smooth" });
+    }
+
+    const [activeSection, setActiveSection] = useState<string | null>(null);
+
+    useEffect(()=>{
+        const handleScroll = () => {
+            if (extractMethodRef.current && 
+                slrRef.current &&
+                codeCloneRef.current &&
+                longMethodRef.current &&
+                separationConcernsRef.current &&
+                codeRef.current
+            ) {
+                const extractMethodTop = extractMethodRef.current.getBoundingClientRect().top;
+                const slrRefTop = slrRef.current.getBoundingClientRect().top;
+                const codeCloneRefTop = codeCloneRef.current.getBoundingClientRect().top;
+                const longMethodRefTop = longMethodRef.current.getBoundingClientRect().top;
+                const separationConcernsRefTop = separationConcernsRef.current.getBoundingClientRect().top;
+                const codeRefTop = codeRef.current.getBoundingClientRect().top;
+
+
+                if (extractMethodTop >= 0 && extractMethodTop < window.innerHeight / 2) {
+                  setActiveSection("extractMethod");
+                } 
+                else if (slrRefTop >= 0 && slrRefTop < window.innerHeight / 2) {
+                    setActiveSection("slr");
+                } 
+                else if (codeCloneRefTop >= 0 && codeCloneRefTop < window.innerHeight / 2) {
+                  setActiveSection("codeClone");
+                } 
+                else if (longMethodRefTop >= 0 && longMethodRefTop < window.innerHeight / 2) {
+                    setActiveSection("longMethod");
+                } 
+                else if (separationConcernsRefTop >= 0 && separationConcernsRefTop < window.innerHeight / 2) {
+                setActiveSection("separationConcerns");
+                } 
+                else if (codeRefTop >= 0 && codeRefTop < window.innerHeight / 2) {
+                    setActiveSection("code");
+                } 
+              }
+        }
+
+        window.addEventListener("scroll", handleScroll);
+        handleScroll(); 
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, 
+    [])
+
     return (
            <div className="flex flex-col sm:flex-row">
                 <div className="w-full sm:w-3/4 p-10 pt-20">
-                    <h1 className="page-header">Extract Method for Code Refactoring</h1>
+                    <h1 ref={extractMethodRef} className="page-header">Extract Method for Code Refactoring</h1>
                     <p className="page-lg-text mb-14">The Extract Method refactoring lets you take a code fragment that can be grouped, move it into a separated method, and replace the old code with a call to the method.</p>
                     <h2 className="page-sub-header my-2">Some of its main benefits include:</h2>
                     <ul className="list-disc pl-5 text-xl mb-14">
@@ -138,14 +196,14 @@ export const ExtractMethodPage = () => {
 
                     <p className="text-xl mt-[75px] mb-[100px] italic">Extract Method refactoring is often difficult to apply in practice due to the low-level code changes it requires. Additionally, existing methods primarily focus on automating the refactoring process rather than recommending opportunities to apply it. As a result, various research projects have aimed to bridge this gap by developing techniques to identify and recommend refactoring opportunities.</p>
                    
-                    <h1 className="page-header">Systematic Literature Review on Current Extract Method Refactoring Research</h1>
+                    <h1 ref={slrRef} className="page-header">Systematic Literature Review on Current Extract Method Refactoring Research</h1>
                     <p className="page-lg-text">We conducted the study, Behind the Intent of Extract Method Refactoring: A Systematic Literature Review, to gain more insight on historical and current research and advancements surrounding Extract Method code refactoring. This systematic literature review captures meaningful statistics from 83 primary studies, focusing on 3 main Extract Method categories: <strong>Code Clones</strong>, <strong>Long Methods</strong>, and <strong>Separation of Concerns</strong>.</p>
                     <div className="my-[100px]">
                         <img alt="Extract Method Development Timeline" src={timeline}/>
                         <p>Fig. 1. Timeline of developing Extract Method refactoring tools.</p>
                     </div>
 
-                    <h2 className="page-sub-header">Code Clones:</h2>
+                    <h2 ref={codeCloneRef} className="page-sub-header">Code Clones:</h2>
                     <p className="text-xl mt-[35px] mb-[20px]">Code clones take code fragments and move them to create a new method, while replacing all instances of that fragment with a call to this newly created method. Of the studies used, 38.6% had a focus on code clone methods, and 49% of the extract method refactoring tools are primarily designed for fixing code clones.</p>
                     <p className="text-xl">Some notable clone detection tools include: <strong>CloRT</strong>, <strong>Aries</strong>, <strong>CCShaper</strong>, <strong>Wrangler</strong>, <strong>HaRe</strong>, <strong>CeDAR</strong>, <strong>FTMPAT</strong>, and <strong>SPAPE</strong>.</p>
 
@@ -173,17 +231,17 @@ export const ExtractMethodPage = () => {
                     </div>
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
-                    <h2 className="page-sub-header">Long Methods:</h2>
+                    <h2 ref={longMethodRef} className="page-sub-header">Long Methods:</h2>
                     <p className="text-xl mt-[35px] mb-[20px]">Long methods are long and complex method that hinders the readability, reusability, and maintainability of the code. 25.6% of the studies focused on identifying extract method opportunities to eliminate long method design effects, through extracting independent and cohesive fragments from long methods as new, short and reusable methods.</p>
                     <p className="text-xl">Some notable long method detection tools include: <strong>Tuck</strong>, <strong>JDeodorant</strong>, <strong>AutoMed</strong>, <strong>SEMI</strong>, <strong>LLPM</strong>, <strong>LMR</strong>, <strong>Bandago</strong>, and <strong>TOAD</strong>.</p>
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
-                    <h2 className="page-sub-header">Separation of Concerns:</h2>
+                    <h2 ref={separationConcernsRef} className="page-sub-header">Separation of Concerns:</h2>
                     <p className="text-xl mt-[35px] mb-[20px]">Separation of concerns refers to the categorization of methods into multiple sub-methods based on behavior to make code less complex and more effectively reusable. 34.9% of the studies used focused on separation of concerns, however there are limitations of the studies due to the absence of context related to the application of refactorings. This makes it unclear as to how developers will identify need to apply refactorings.</p>
                     <p className="text-xl">Some notable separation of concerns tools include: <strong>SDAR</strong>, <strong>Xrefactory</strong>, <strong>RefactoringAnnotation</strong>, <strong>JExtract</strong>, <strong>ReAF</strong>, <strong>GEMS</strong>, and <strong>PostponableRefactoring</strong>.</p>
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
-                    <h1 className="page-header">Code Analysis and Representations in Extract Method Tools</h1>
+                    <h1 ref={codeRef} className="page-header">Code Analysis and Representations in Extract Method Tools</h1>
                     <h2 className="page-sub-header">Code Analysis:</h2>
                     <p className="text-xl my-[10px]">Code analysis refers to the nature of a code can be represented by the design properties of its specification. The 4 main design properties that are considered are:</p>
                     <ul className="list-disc pl-5 text-xl mb-[50px]">
@@ -232,8 +290,36 @@ export const ExtractMethodPage = () => {
                     </div>
                 </div>
                 
-                <div className="w-1/4 h-[100vh] sticky top-0 bg-slate-200 p-4 hidden sm:block">
-                    <p>On this page</p>
+                <div className="w-1/4 h-[100vh] sticky top-0 bg-slate-200 py-4 px-10 hidden sm:block">
+                    <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center">
+                        <FaRegFileAlt />
+                        <p className="ml-2 font-bold">On this page</p>
+                        </div>
+                        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        <FaAngleDoubleUp />
+                        </button>
+                    </div>
+                    <div className="flex flex-col">
+                    <button onClick={()=>scrollToRef(extractMethodRef)}> 
+                        <p className={activeSection === "extractMethod" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Extract Method for Code Refactoring</p>
+                    </button>
+                    <button onClick={()=>scrollToRef(slrRef)}> 
+                        <p className={activeSection === "slr" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Systematic literature review on current Extract Method Refactoring research</p>
+                    </button>
+                    <button onClick={()=>scrollToRef(codeCloneRef)}> 
+                        <p className={activeSection === "codeClone" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Code Clones</p>
+                    </button>
+                    <button onClick={()=>scrollToRef(longMethodRef)}> 
+                        <p className={activeSection === "longMethod" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Long Methods</p>
+                    </button>
+                    <button onClick={()=>scrollToRef(separationConcernsRef)}> 
+                        <p className={activeSection === "separationConcerns" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Separation of Concerns</p>
+                    </button>
+                    <button onClick={()=>scrollToRef(codeRef)}> 
+                        <p className={activeSection === "code" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Code Analysis and Representation</p>
+                    </button>
+                    </div>
                 </div>
             </div>
     );
