@@ -84,7 +84,6 @@ export const PublicationsPage = () => {
   };
 
   useEffect(() => {
-    console.log(citationIndex)
     if (citationIndex == null) return;
 
     dialogRef.current?.showModal();

@@ -1,7 +1,8 @@
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-
-
+import  timeline from '../assets/extractmethod-timeline.png';
+import cloneTypes from '../assets/extractmethod-clone-types.png';
+import relationships from '../assets/extractmethod-relationships.png'
 const getNextBeforeRefactor = `
     public Result getNext(Databag db) throws ExecException {
         List<ExpressionOperator> l = new ArrayList<ExpressionOperator>();
@@ -135,9 +136,76 @@ export const ExtractMethodPage = () => {
                    
                     <h1 className="page-header">Systematic Literature Review on Current Extract Method Refactoring Research</h1>
                     <p className="page-lg-text">We conducted the study, Behind the Intent of Extract Method Refactoring: A Systematic Literature Review, to gain more insight on historical and current research and advancements surrounding Extract Method code refactoring. This systematic literature review captures meaningful statistics from 83 primary studies, focusing on 3 main Extract Method categories: <strong>Code Clones</strong>, <strong>Long Methods</strong>, and <strong>Separation of Concerns</strong>.</p>
+                    <div className="my-[100px]">
+                        <img alt="Extract Method Development Timeline" src={timeline}/>
+                        <p>Fig. 1. Timeline of developing Extract Method refactoring tools.</p>
+                    </div>
 
+                    <h2 className="page-sub-header">Code Clones:</h2>
+                    <p className="text-xl mt-[35px] mb-[20px]">Code clones take code fragments and move them to create a new method, while replacing all instances of that fragment with a call to this newly created method. Of the studies used, 38.6% had a focus on code clone methods, and 49% of the extract method refactoring tools are primarily designed for fixing code clones.</p>
+                    <p className="text-xl">Some notable clone detection tools include: <strong>CloRT</strong>, <strong>Aries</strong>, <strong>CCShaper</strong>, <strong>Wrangler</strong>, <strong>HaRe</strong>, <strong>CeDAR</strong>, <strong>FTMPAT</strong>, and <strong>SPAPE</strong>.</p>
+
+                    <h3 className="text-2xl font-bold mt-[35px]">Clone Types</h3>
+                    <p className="text-xl my-[10px]">There are 4 notable, well-defined clone types in the area of Extract Methed Refactoring:</p>
+                    <div className="flex flex-col border border-1 border-black rounded-md">
+                        <div className="border-b border-1 border-black  p-4">
+                            <p className="text-xl"><strong>Type 1</strong>: Identical code fragments except for variations in whitespace (Type-1a), comments (Type-1b), and layouts and formatting (Type-1c).</p>
+                        </div>
+                        <div className="border-b border-1 border-black  p-4">
+                            <p className="text-xl"><strong>Type 2</strong>: Syntactically identical fragments except for variations in identifiers, literals, types, whitespace, layout and comments. It can involve renaming of identifiers and literals in the first fragment (Type-2a), renaming identifiers in the second fragment (Type-2b), renaming data types and literal values in the third fragment (Type-2c), and replacing some parameters with expressions in the fourth fragment (Type-2d).</p>
+                        </div>
+                        <div className="border-b border-1 border-black  p-4">
+                            <p className="text-xl"><strong>Type 3</strong>: Copied fragments with further modifications such as changed, added or removed statements, in addition to variations in identifiers, literals, types, whitespace, layout and comments.</p>
+                        </div>
+                        <div className="p-4">
+                            <p className="text-xl"><strong>Type 4</strong>: Two or more code fragments that perform the same computation but are implemented by different syntactic variants. </p>
+                        </div>
+                    </div>
+
+                    <div className="w-[70%] h-auto mx-auto mt-[100px]">
+                        <img alt="Clone Types Diagram" src={cloneTypes}/>
+                        <p className="ml-2">Fig. 2. Examples of various clone types[1]</p>
+                        <p className="ml-2">[1] Roy, Chanchal K., James R. Cordy, and Rainer Koschke. "Comparison and evaluation of code clone detection techniques and tools: A qualitative approach." Science of Computer Programming 74.7 (2009): 470-495.</p>
+                    </div>
+                    <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
+
+                    <h2 className="page-sub-header">Long Methods:</h2>
+                    <p className="text-xl mt-[35px] mb-[20px]">Long methods are long and complex method that hinders the readability, reusability, and maintainability of the code. 25.6% of the studies focused on identifying extract method opportunities to eliminate long method design effects, through extracting independent and cohesive fragments from long methods as new, short and reusable methods.</p>
+                    <p className="text-xl">Some notable long method detection tools include: <strong>Tuck</strong>, <strong>JDeodorant</strong>, <strong>AutoMed</strong>, <strong>SEMI</strong>, <strong>LLPM</strong>, <strong>LMR</strong>, <strong>Bandago</strong>, and <strong>TOAD</strong>.</p>
+                    <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
+
+                    <h2 className="page-sub-header">Separation of Concerns:</h2>
+                    <p className="text-xl mt-[35px] mb-[20px]">Separation of concerns refers to the categorization of methods into multiple sub-methods based on behavior to make code less complex and more effectively reusable. 34.9% of the studies used focused on separation of concerns, however there are limitations of the studies due to the absence of context related to the application of refactorings. This makes it unclear as to how developers will identify need to apply refactorings.</p>
+                    <p className="text-xl">Some notable separation of concerns tools include: <strong>SDAR</strong>, <strong>Xrefactory</strong>, <strong>RefactoringAnnotation</strong>, <strong>JExtract</strong>, <strong>ReAF</strong>, <strong>GEMS</strong>, and <strong>PostponableRefactoring</strong>.</p>
+                    <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
+
+                    <h1 className="page-header">Code Analysis and Representations in Extract Method Tools</h1>
+                    <h2 className="page-sub-header">Code Analysis:</h2>
+                    <p className="text-xl my-[10px]">Code analysis refers to the nature of a code can be represented by the design properties of its specification. The 4 main design properties that are considered are:</p>
+                    <ul className="list-disc pl-5 text-xl mb-[50px]">
+                        <li><strong>Textual</strong>: no transformation of source code, used directly in detection process</li>
+                        <li><strong>Structural</strong>: transforms code into lexical tokens with compiler-style lexical analysis</li>
+                        <li><strong>Syntactic</strong>: use parse to transform source program into parse tree/ AST</li>
+                        <li><strong>Semantic</strong>: captures control and data flow of program by utilizing static program analysis</li>
+                    </ul>
+                
+                    <h2 className="page-sub-header">Code Representations:</h2>
+                    <p className="text-xl my-[10px]">Code representation refers to the the internal representation of the artifacts to be refactored. We extract comprehensive categories grouping the representation types used to implement the Extract Method refactoring. These studies are based on six main categories:</p>
+                    <ul className="list-disc pl-5 text-xl mb-[50px]">
+                        <li>Source code (31.3%)</li>
+                        <li>Abstract Syntax Tree (22.9%)</li>
+                        <li>Graphs (18.1%)</li>
+                        <li>Metrics (10.8%)</li>
+                        <li>Tokens (9.6%)</li>
+                        <li>Text (7.2%)</li>
+                    </ul>
+                
+                    <div className="w-[70%] h-auto mx-auto mt-[100px]">
+                        <img alt="Extract Method relationships" src={relationships}/>
+                        <p className="ml-2">Fig. 3. The relationship among the intent, code analysis, representation, detection, execution, and validation method of the Extract Method refactoring.</p>
+                    </div>
                 </div>
-
+                
                 <div className="w-1/4 h-[100vh] sticky top-0 bg-slate-200 p-4 hidden sm:block">
                     <p>On this page</p>
                 </div>
