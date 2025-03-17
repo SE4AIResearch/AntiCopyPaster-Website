@@ -146,7 +146,7 @@ export const PublicationsPage = () => {
           onClick={closeModal}
         >
           <IoMdClose />
-        </button>
+        </button> 
       </dialog>
       <h1 className="docs-header">Publications</h1>
       <div className="flex justify-center mb-[20px]">
