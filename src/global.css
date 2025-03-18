@@ -13,6 +13,19 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
+.page-header {
+  @apply mt-4 text-4xl font-bold mb-10;
+}
+
+.page-sub-header {
+  @apply font-bold text-3xl;
+}
+
+.page-lg-text {
+  @apply mb-10 text-2xl;
+
+}
+
 .docs-header {
   @apply mt-4 text-center text-4xl font-bold;
 }

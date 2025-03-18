@@ -13,6 +13,7 @@ import { AntiCopyPasterPage } from "./pages/AntiCopyPasterPage";
 function App() {
   return (
     <HashRouter>
+
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path="/" element={<IndexPage />} />
