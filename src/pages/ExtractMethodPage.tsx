@@ -92,9 +92,74 @@ const getNextAfterRefactor = `
                                             : rhs.geNext(obj, dataType);
         illustratorMarkup(null, result.result, ((Boolean) res.result) ? 0: 1);
         return result; 
+    } 
+`;
+const longMethodCode = `
+    public class OrderService {
+
+        public void processOrders(List<Order> orders) {
+            System.out.println("Starting order processing...");
+
+            // Validate orders
+            for (Order order : orders) {
+                if (order.getItems().isEmpty()) {
+                    System.out.println("Invalid order: " + order.getId() + " (No items)");
+                    return;
+                }
+            }
+
+            // Process payments
+            for (Order order : orders) {
+                PaymentDetails payment = order.getPaymentDetails();
+                if (payment.getCardNumber().isEmpty() || payment.getAmount() <= 0) {
+                    System.out.println("Payment failed for order: " + order.getId());
+                    return;
+                }
+                System.out.println("Processing payment of $" 
+                                    + payment.getAmount() 
+                                    + " for order #" + order.getId());
+            }
+
+            // Send confirmation emails
+            for (Order order : orders) {
+                System.out.println("Sending confirmation email to: " + order.getCustomerEmail());
+            }
+
+            System.out.println("Order processing completed.");
+        }
     }
-    
-    `;
+`;
+
+const longMethodRefactoredCode = `
+// Order Validator
+public boolean isValidOrder(Order order) {
+    if (order.getItems().isEmpty()) {
+        System.out.println("Invalid order: " + order.getId() + " (No items)");
+        return false;
+    }
+    return true;
+}
+
+
+// Payment Processor
+public boolean processPayment(PaymentDetails payment, int orderId) {
+    if (payment.getCardNumber().isEmpty() || payment.getAmount() <= 0) {
+        System.out.println("Payment failed for order: " + orderId);
+        return false;
+    }
+    System.out.println("Processing payment of $" 
+                                + payment.getAmount() + " for order #" + orderId);
+    return true;
+}
+
+
+// Email Confirmation
+public void sendConfirmation(String customerEmail, int orderId) {
+    System.out.println("Sending confirmation email to: " 
+                                + customerEmail + " for order #" + orderId);
+}
+}
+`
 export const ExtractMethodPage = () => {
     const extractMethodRef = useRef<HTMLDivElement>(null);
     const slrRef = useRef<HTMLDivElement>(null);
@@ -240,6 +305,28 @@ export const ExtractMethodPage = () => {
                     <p className="text-xl mt-[35px] mb-[20px]">Separation of concerns refers to the categorization of methods into multiple sub-methods based on behavior to make code less complex and more effectively reusable. 34.9% of the studies used focused on separation of concerns, however there are limitations of the studies due to the absence of context related to the application of refactorings. This makes it unclear as to how developers will identify need to apply refactorings.</p>
                     <p className="text-xl">Some notable separation of concerns tools include: <strong>SDAR</strong>, <strong>Xrefactory</strong>, <strong>RefactoringAnnotation</strong>, <strong>JExtract</strong>, <strong>ReAF</strong>, <strong>GEMS</strong>, and <strong>PostponableRefactoring</strong>.</p>
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
+
+                    <h2 className="page-sub-header">An Example concerning Long Methods and Separation of Concerns:</h2>
+                    <p className="text-xl my-[35px]">Consider this java class, orderService:</p>
+                    <div>
+                        <SyntaxHighlighter 
+                            language="java"  
+                            style={docco}
+                        >
+                            {longMethodCode}
+                        </SyntaxHighlighter>
+                    </div>
+                    <p  className="text-xl my-[35px]">Here, we consider the processOrders() method to be a long method. This method takes on too many responsibilities, is hard to follow, and has limited reusability opportunities. We can refactor this method to better follow best practices using a separations of concerns methodology. We may get something like this:</p>
+                    <div>
+                        <SyntaxHighlighter 
+                            language="java"  
+                            style={docco}
+                        >
+                            {longMethodRefactoredCode}
+                        </SyntaxHighlighter>
+                    </div>
+                    <p  className="text-xl my-[35px]">After refactoring, processOrders() is split into three methods, isValidOrder(), processPayment(), and sendConfirmation(). Each method now has a single responsibility and are individually able to be used in various situations, enhancing reusability.</p>
+                    <hr className="border-t-2 border-gray-300 mt-[100px] mb-[100px] w-[65%] mx-auto"/>
 
                     <h1 ref={codeRef} className="page-header">Code Analysis and Representations in Extract Method Tools</h1>
                     <h2 className="page-sub-header">Code Analysis:</h2>
