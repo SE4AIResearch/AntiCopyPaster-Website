@@ -4,10 +4,13 @@ import { RiFilePaper2Line } from "react-icons/ri";
 // import { MdOutlineInbox } from "react-icons/md";
 import { HiOutlineTerminal } from "react-icons/hi";
 import { MdMenu } from "react-icons/md";
+import ContactModal from "../ContactModal.tsx";
+import { useState } from "react";
 
 export const Navbar = () => {
-
-  return (
+  const [contactModalActive, setContactModalActive] = useState(false);
+  return (<>
+    <ContactModal contactModalActive={contactModalActive} setContactModalActive={setContactModalActive}/>
     <header className="bg-[#27282c] text-white">
       <nav className="max-w-screen-xl flex flex-wrap justify-between mx-auto items-center p-3">
         <div id="navbar-header">
@@ -75,15 +78,16 @@ export const Navbar = () => {
               </Link>
             </li>
             <li className="topnav-li">
-              <Link to="/contact">
+              <button onClick={()=>setContactModalActive(true)}>
                 <div className="mx-auto text-[16px] bg-blue-600 text-white px-4 py-2 rounded-xl">
                   <span>Contact Us</span>
                 </div>
-              </Link>
+              </button>
             </li>
           </ul>
         </div>
       </nav>
     </header>
+    </>
   );
 };
