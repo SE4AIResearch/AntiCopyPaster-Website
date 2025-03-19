@@ -96,7 +96,9 @@ const ContactModal = ({contactModalActive, setContactModalActive}:ContactModalPr
 
                 <button 
                     type="submit" 
-                    className="bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition duration-200">
+                    className="bg-blue-500 text-white font-medium py-2 rounded-md hover:bg-blue-600 transition duration-200"
+                    onClick={()=>closeModal()}
+                    >
                     Submit
                 </button>
             </form>
