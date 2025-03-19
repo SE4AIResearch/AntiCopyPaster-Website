@@ -1,7 +1,6 @@
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { IndexPage } from "./pages/IndexPage";
 import { PublicationsPage } from "./pages/PublicationsPage";
-import { ContactPage } from "./pages/ContactPage";
 import { DefaultLayout } from "./components/layout/DefaultLayout";
 import { DocsLayout } from "./components/layout/DocsLayout";
 import { docsMenus } from "./docsMenu";
@@ -26,9 +25,6 @@ function App() {
         </Route>
         <Route element={<DefaultLayout />}>
           <Route path="/anticopypaster" element={<AntiCopyPasterPage />} />
-        </Route>
-        <Route element={<DefaultLayout />}>
-          <Route path="/contact" element={<ContactPage />} />
         </Route>
         <Route element={<DocsLayout />}>
           {docsMenus.map((docsMenu, index) => (

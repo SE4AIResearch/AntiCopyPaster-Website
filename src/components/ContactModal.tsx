@@ -1,6 +1,40 @@
+import { useRef, useEffect } from "react";
+import { IoMdClose } from "react-icons/io";
+import type React from "react";
+
+type ContactModalProps = {
+    contactModalActive: boolean;
+    setContactModalActive: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 
-export const ContactPage = () => {
+const ContactModal = ({contactModalActive, setContactModalActive}:ContactModalProps) => {
+    const dialogRef = useRef<HTMLDialogElement | null>(null);
+
+    const closeModal = () => {
+        dialogRef.current?.close();
+        setContactModalActive(false);
+        document.body.style.overflow = "auto";
+    };
+
+    
+    useEffect(() => {
+        if (!contactModalActive) return;
+
+        const dialog = dialogRef.current;
+        if (dialog) {
+            dialog.showModal();
+            document.body.style.overflow = "hidden";
+
+            dialog.addEventListener("close", closeModal);
+        }
+
+        return () => {
+            if (dialog) {
+                dialog.removeEventListener("close", closeModal);
+            }
+        };
+    }, [contactModalActive]);
 
     const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -22,9 +56,15 @@ export const ContactPage = () => {
         }
     };
 
-    return (<>
+    return (
+    <dialog className="rounded-xl overflow-visible p-[10px]" ref={dialogRef}>
+        <button
+          className="bg-zinc-200 text-black py-2 px-2 rounded-full absolute -top-4 -right-4 z-1"
+          onClick={() => closeModal()}
+        >
+          <IoMdClose />
+      </button> 
         <div className="px-[50px] w-full max-w-[800px] mx-auto gap-8">
-
             <div className="relative z-0 flex flex-col gap-4 m-6 justify-center text-center">
                 <p>
                 This research on Extract Method Refactoring, along with the implementation of the code duplicates refactoring extraction tool, was performed by the faculty and students of Stevens Institute of Technology, Rochester Institute of Technology, University of Michigan-Flint in collaboration with JetBrains Research.
@@ -62,5 +102,9 @@ export const ContactPage = () => {
             </form>
 
         </div>
-    </>)
+        </dialog>
+    )
 }
+
+export default  ContactModal
+
