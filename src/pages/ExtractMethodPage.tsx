@@ -235,7 +235,7 @@ export const ExtractMethodPage = () => {
                         <li>Decomposition of long or complex code structures</li>
                         <li>Support of code testability</li>
                     </ul>
-                    <p className="">Method extraction is one of the main refactorings that were defined when the study of refactoring was established, as it is a common response to the need of keeping methods concise and modular, and reducing the spread of shared responsibilities. The wide variety of usage scenarios shows why method extraction is considered the Swiss Army knife of refactoring operations.</p>
+                    <p>Method extraction is one of the main refactorings that were defined when the study of refactoring was established, as it is a common response to the need of keeping methods concise and modular, and reducing the spread of shared responsibilities. The wide variety of usage scenarios shows why method extraction is considered the Swiss Army knife of refactoring operations.</p>
                     
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
                     <h2 className="page-sub-header">An Example of Extract Method Refactoring:</h2>
