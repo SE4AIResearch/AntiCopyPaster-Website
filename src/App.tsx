@@ -8,11 +8,24 @@ import { DocsNotFound } from "./components/layout/docs/DocsNotFound";
 import "flowbite";
 import { ExtractMethodPage } from "./pages/ExtractMethodPage";
 import { AntiCopyPasterPage } from "./pages/AntiCopyPasterPage";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 
 function App() {
   return (
     <HashRouter>
-
+      <ScrollToTop/>
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path="/" element={<IndexPage />} />

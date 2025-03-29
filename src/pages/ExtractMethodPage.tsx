@@ -235,7 +235,7 @@ export const ExtractMethodPage = () => {
                         <li>Decomposition of long or complex code structures</li>
                         <li>Support of code testability</li>
                     </ul>
-                    <p className="">Method extraction is one of the main refactorings that were defined when the study of refactoring was established, as it is a common response to the need of keeping methods concise and modular, and reducing the spread of shared responsibilities. The wide variety of usage scenarios shows why method extraction is considered the Swiss Army knife of refactoring operations.</p>
+                    <p>Method extraction is one of the main refactorings that were defined when the study of refactoring was established, as it is a common response to the need of keeping methods concise and modular, and reducing the spread of shared responsibilities. The wide variety of usage scenarios shows why method extraction is considered the Swiss Army knife of refactoring operations.</p>
                     
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
                     <h2 className="page-sub-header">An Example of Extract Method Refactoring:</h2>
@@ -399,13 +399,13 @@ export const ExtractMethodPage = () => {
                         <p className={activeSection === "slr" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Systematic literature review on current Extract Method Refactoring research</p>
                     </button>
                     <button onClick={()=>scrollToRef(codeCloneRef)}> 
-                        <p className={activeSection === "codeClone" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Code Clones</p>
+                        <p className={activeSection === "codeClone" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Code Clones</p>
                     </button>
                     <button onClick={()=>scrollToRef(longMethodRef)}> 
-                        <p className={activeSection === "longMethod" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Long Methods</p>
+                        <p className={activeSection === "longMethod" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Long Methods</p>
                     </button>
                     <button onClick={()=>scrollToRef(separationConcernsRef)}> 
-                        <p className={activeSection === "separationConcerns" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Separation of Concerns</p>
+                        <p className={activeSection === "separationConcerns" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Separation of Concerns</p>
                     </button>
                     <button onClick={()=>scrollToRef(codeRef)}> 
                         <p className={activeSection === "code" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Code Analysis and Representation</p>
