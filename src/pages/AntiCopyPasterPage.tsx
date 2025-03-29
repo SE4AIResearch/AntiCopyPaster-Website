@@ -2,6 +2,7 @@ import  extractionExample from '../assets/anitCopyPaster-example.png';
 import pipeline from '../assets/antiCopyPaster-pipeline.png'
 import cnnArchitecture from '../assets/antiCopyPaster-cnn-architecture.png'
 import modelMetrics from '../assets/antiCopyPaster-model-metrics.png'
+import settings from "../assets/antiCopyPaster-settings.png"
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa6";
 import { FaRegFileAlt } from "react-icons/fa";
@@ -16,7 +17,8 @@ export const AntiCopyPasterPage = () => {
     const howExtractionWorksRef = useRef<HTMLDivElement>(null);
     const extractionModelRef = useRef<HTMLDivElement>(null);
     const modelEvaluationRef = useRef<HTMLDivElement>(null);
-    const refactorLauncherRef = useRef<HTMLDListElement>(null);
+    const refactorLauncherRef = useRef<HTMLDivElement>(null);
+    const customDetectionRef = useRef<HTMLDivElement>(null);
 
     const scrollToRef = (ref: RefObject<HTMLElement>) => {
         ref?.current?.scrollIntoView({ behavior: "smooth" });
@@ -33,7 +35,8 @@ export const AntiCopyPasterPage = () => {
                 howExtractionWorksRef.current &&
                 extractionModelRef.current &&
                 modelEvaluationRef.current &&
-                refactorLauncherRef.current
+                refactorLauncherRef.current &&
+                customDetectionRef.current
             ) {
                 const antiCopyPasterRefTop = antiCopyPasterRef.current.getBoundingClientRect().top;
                 const dupDetectCodeAnalysisRefTop = dupDetectCodeAnalysisRef.current.getBoundingClientRect().top;
@@ -42,6 +45,7 @@ export const AntiCopyPasterPage = () => {
                 const extractionModelRefTop = extractionModelRef.current.getBoundingClientRect().top;
                 const modelEvaluationRefTop = modelEvaluationRef.current.getBoundingClientRect().top;
                 const refactorLauncherRefTop = refactorLauncherRef.current.getBoundingClientRect().top;
+                const customDetectionRefTop = customDetectionRef.current.getBoundingClientRect().top;
 
                 if (antiCopyPasterRefTop >= 0 && antiCopyPasterRefTop < window.innerHeight / 2) {
                   setActiveSection("antiCopyPaster");
@@ -63,6 +67,9 @@ export const AntiCopyPasterPage = () => {
                 } 
                 else if (refactorLauncherRefTop >= 0 && refactorLauncherRefTop < window.innerHeight / 2) {
                     setActiveSection("refactorLauncher");
+                } 
+                else if (customDetectionRefTop >= 0 && customDetectionRefTop < window.innerHeight / 2) {
+                    setActiveSection("customDetection");
                 } 
               }
         }
@@ -136,16 +143,40 @@ export const AntiCopyPasterPage = () => {
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
                     <h1 ref={refactorLauncherRef} className="page-sub-header mb-[35px]">Refactoring Launcher:</h1>
-
                     <p className="mt-[35px] mb-[35px]">The Refactoring Launcher first checks if pasted code fragment can be extracted into separate method without compilation errors. If so, send a notification to user in IDE, informing them of a extraction recommendation. If user views recommendation, Refactoring Launcher passes duplicate fragment as an input into IDE’s built-int extract method api and initiates preview window, where the user can accept as is, rename the new extract method, or cancel process</p>
-
+                   
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
+                    <h1 ref={customDetectionRef} className="page-sub-header">Customizing Detection Rules:</h1>
+                    <p className="mt-[35px] mb-[35px]">In AntiCopyPaster 2.0+, we give users the ability to define what characteristics of duplicate code that they want to be refactored.</p>
+                    
+                    <h2 className="text-2xl font-bold mb-[35px]">Settings Page:</h2>
+                    <div className="mb-[35px] mx-[100px]">
+                        <img className="shadow-sm" alt="AntiCopyPaster Settings" src={settings}/>
+                        <p className="ml-2">Fig. 5. AntiCopyPaster Settings Page.</p>
+                    </div>
+                    <p>Users can choose how many instances of duplicate code are required to trigger a notification, and the delay time between detection and notification, Users can choose between heuristic recommendations or deep learning model recommendations.</p>
+                    <br/>
+                    <p>For heuristic recommendations, users can measure and compare 4 metrics for detection:</p>
+                    <ul className="list-disc pl-5  mb-[50px]">
+                        <li>Keywords: how many keywords the segment should contain</li>
+                        <li>Coupling: how many references made outside of this class</li>
+                        <li>Complexity: how sensitive recommendation is to complexity</li>
+                        <li>Size: how large the code segment is</li>
+                    </ul>
+
+                    <h2 className="text-2xl font-bold mb-[35px]">Advanced Settings Page:</h2>
+                    <p>Can customize each of the 4 metrics:</p>
+                    <ul className="list-disc pl-5  mb-[200px]">
+                        <li>Keywords: choose between total keyword count and keyword density, and choose specific keywords</li>
+                        <li>Coupling: choose between total coupling and coupling density, and choose between total, field, or method connectivity</li>
+                        <li>Complexity: choose between total area of segment, area density, declaration area, or method declaration depth density</li>
+                        <li>Size: choose between number of lines, number of symbols, density of symbols, and between size of segment and size of method declarations</li>
+                    </ul>
                     <div className="flex w-[80%] mx-auto">
                         <div className="w-1/2">
                             <p>Interested and want to learn more?</p>
-                            <p>Read the full literature review <a className="text-blue-600" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10381511" target="_blank">here</a>.</p>
-                            <p>See our other publications <Link className="text-blue-600" to="/publications">here</Link>.</p>
+                            <p>See our publications <Link className="text-blue-600" to="/publications">here</Link>.</p>
                             <br/>
                             <p>Questions or concerns?</p>
                             <p>Feel free to contact us <button onClick={()=>{setContactModalActive(true)}}><span className="text-blue-600">here</span></button>.</p>
@@ -154,9 +185,9 @@ export const AntiCopyPasterPage = () => {
                             <div className="flex justify-between items-center w-[80%] h-[55%] border border-1 border-black rounded-md p-5">
                                 <div>
                                     <p className="text-gray-500">Next up:</p>
-                                    <p>AntiCopyPaster</p>
+                                    <p>AntiCopyPaster Docs</p>
                                 </div>
-                                <Link to="/anticopypaster"><FaArrowRight /></Link>
+                                <Link to="/docs/getting-started"><FaArrowRight /></Link>
 
                             </div>
                         </div>
@@ -184,16 +215,19 @@ export const AntiCopyPasterPage = () => {
                         <p className={activeSection === "methodExtraction" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Method Extraction</p>
                     </button>
                     <button onClick={()=>scrollToRef(howExtractionWorksRef)}> 
-                        <p className={activeSection === "howExtractionWorks" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>How does Extraction Work in AntiCopyPaster?</p>
+                        <p className={activeSection === "howExtractionWorks" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>How does Extraction Work in AntiCopyPaster?</p>
                     </button>
                     <button onClick={()=>scrollToRef(extractionModelRef)}> 
-                        <p className={activeSection === "extractionModel" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Developing the Binary Classification Model</p>
+                        <p className={activeSection === "extractionModel" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Developing the Binary Classification Model</p>
                     </button>
                     <button onClick={()=>scrollToRef(modelEvaluationRef)}> 
-                        <p className={activeSection === "modelEvaluation" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Evaluation of Proposed Model</p>
+                        <p className={activeSection === "modelEvaluation" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Evaluation of Proposed Model</p>
                     </button>
                     <button onClick={()=>scrollToRef(refactorLauncherRef)}> 
                         <p className={activeSection === "refactorLauncher" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Refactor Launcher</p>
+                    </button>
+                    <button onClick={()=>scrollToRef(customDetectionRef)}> 
+                        <p className={activeSection === "customDetection" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Customizing Detection Rules</p>
                     </button>
                     </div>
                 </div>

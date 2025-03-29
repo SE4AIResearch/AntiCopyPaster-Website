@@ -399,13 +399,13 @@ export const ExtractMethodPage = () => {
                         <p className={activeSection === "slr" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Systematic literature review on current Extract Method Refactoring research</p>
                     </button>
                     <button onClick={()=>scrollToRef(codeCloneRef)}> 
-                        <p className={activeSection === "codeClone" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Code Clones</p>
+                        <p className={activeSection === "codeClone" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Code Clones</p>
                     </button>
                     <button onClick={()=>scrollToRef(longMethodRef)}> 
-                        <p className={activeSection === "longMethod" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Long Methods</p>
+                        <p className={activeSection === "longMethod" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Long Methods</p>
                     </button>
                     <button onClick={()=>scrollToRef(separationConcernsRef)}> 
-                        <p className={activeSection === "separationConcerns" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Separation of Concerns</p>
+                        <p className={activeSection === "separationConcerns" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Separation of Concerns</p>
                     </button>
                     <button onClick={()=>scrollToRef(codeRef)}> 
                         <p className={activeSection === "code" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Code Analysis and Representation</p>
