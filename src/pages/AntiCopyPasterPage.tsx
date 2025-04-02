@@ -102,29 +102,36 @@ export const AntiCopyPasterPage = () => {
 
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
-                    <h1 ref={dupDetectCodeAnalysisRef} className="page-header mb-5">Duplicate Detection and Code Analysis:</h1>
+                    <h1 ref={howExtractionWorksRef} className="page-header">How does Extraction Work in AntiCopyPaster?</h1>
 
-                    <p>AntiCopyPaster uses a bag-of-words token-based clone detection. It takes a code fragment as input, and parses all methods inside the same file into token representations. Then, it compares the input and current methods, taking into account exact matches and fragments with minor changes between them. </p>
-                    <br/>
-                    <p>If similarity is detected, we implement a delay from detection time, incase user plans to significantly alter pasted code. The code fragment is placed into a queue, and is checked that is it java code, and that it constitutes a correct syntactic statement, by attempting to build a PIS tree of the fragment. If passes checks and still flagged as a duplicate after delay, code is passed to Code Analyzer, where it calculated the metric vector used for model input.</p>
-                    
-                    <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
-
-                    
-                    <h1 ref={methodExtractionRef} className="page-sub-header mb-[35px]">Method Extraction:</h1>
-
-                    <h2 ref={howExtractionWorksRef} className="text-2xl font-bold">How does Extraction Work in AntiCopyPaster?</h2>
-
-                    <p className=" mt-[35px] mb-[20px]">AntiCopyPaster uses a deep learning binary classification model to decide what methods need to be extracted, trained on a dataset of 18,942 code fragments mined from 13 apache projects. Duplicate code fragments are parsed using IDEs program structure interface, to generate corresponding syntactic and semantic model. This model is then used to calculate  a set of 78 comprehensive structural and semantic metrics, used in various studies recommending Extract Method refactoring. These metrics are inputted to a binary classifier model, and if classifier confirm refactoring, the Refactoring Launcher is called.</p>
+                    <p className=" mt-[35px] mb-[20px]">AntiCopyPaster uses a deep learning binary classification model to determine which methods need to be extracted. The model is trained on a dataset of 18,942 code fragments mined from 13 Apache projects. Duplicate code fragments are parsed using the <strong>Duplicate Detector</strong> and sent to the <strong>Code Analyzer</strong> to generate corresponding syntactic and semantic models. These models are then used to compute a set of 78 comprehensive structural and semantic metrics, which have been used in various studies recommending Extract Method refactoring. These metrics are fed into the <strong>Method Extractor</strong>, and if its classifier confirms the need for refactoring, the <strong>Refactoring Launcher</strong> is triggered.</p>
 
                     <div className="mb-[35px]">
                         <img className="shadow-sm" alt="AntiCopyPaster Pipeline" src={pipeline}/>
                         <p className="ml-2">Fig. 2. The pipeline of AntiCopyPaster. Top: training the model, bottom: using the plugin.</p>
                     </div>
+
+                    <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
+
+                    <h1 ref={dupDetectCodeAnalysisRef} className="page-header mb-5">Duplicate Detector and Code Analyzer:</h1>
+
+                    
+                    <p>AntiCopyPaster's <strong>Duplicate Detector</strong> uses a bag-of-words token-based clone detection method. It takes a code fragment as input and parses all methods inside the same file into token representations. Then, it compares the input and current methods, considering both exact matches and fragments with minor modifications.. </p>
+                    <br/>
+                    <p>If similarity is detected, we implement a delay from the detection time in case the developer intends to significantly modify the pasted code. The code fragment is then placed into a queue and checked to ensure that it is both valid Java code and a correct syntactic statement by attempting to build a Program Structure Interface (PSI) tree of the fragment. If it passes the two checks, and is still flagged as a duplicate after the delay period, the code fragment is passed to <strong>Code Analyzer</strong>, where it calculates a metric vector consiting of 78 well-defined metrics for determining an extraction recommendation. This metric vector is used as input for the <strong>Method Extractor</strong>.</p>
+                    
+                    <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
+
+                    
+                    <h1 ref={methodExtractionRef} className="page-sub-header mb-[35px]">Method Extractor:</h1>
+
+                    <p className=" mt-[35px] mb-[35px]">The Method Extractor takes the metric vector as input, and feeds it to the pre-trained model in order to make the binary decision of whether this code fragment is similar to the ones that have been previously refactored in real projects. If the classifier confirms the refactoring, then <strong>Refactoring Launcher</strong> is called.</p>
+
+                    
                     
                     <h2 ref={extractionModelRef} className="text-2xl font-bold">Developing the Binary Classification Model:</h2>
 
-                    <p className=" mt-[35px] mb-[35px]">First, a training dataset consisting of 9,471 code fragments was mined from 13 mature well-defined projects from Apache Software Foundations.  RefactoringMiner v2.0 was used on these projects to identify methods underwent extract method refactorings for positive examples.For negative examples first identify methods that were eligible for extract method, and then rank based on scoring formula inspired by Haas and Hummel, using bottom 95% for those that are less likely to be extracted. Used 78 extensively used metrics from previous studies to identify patterns in samples, and trained a binary classification model following a CNN model, taking these metrics as inputs to distinguish between whether duplicate code will or will not be extracted.</p>
+                    <p className=" mt-[35px] mb-[35px]">First, a training dataset consisting of 9,471 code fragments was mined from the 13 mature, well-defined projects from Apache Software Foundations. RefactoringMiner v2.0 was used to identify methods that underwent Extract Method refactorings, serving as positive examples. For negative examples, methods eligible for Extract Method refactoring were first identified. These methods were then ranked based on a scoring formula inspired by Haas and Hummel, using the bottom 95%, methods considered less likely to be extracted. A set of 78 extensively used metrics from previous studies was defined to identify patterns in the samples, and the binary classification model, based on a Convolutional Neural Network (CNN), was trained using these metrics as inputs to distinguish whether duplicate code is likely to be extracted or not.</p>
                     <div className="mb-[35px]">
                         <img className="shadow-sm" alt="AntiCopyPaster CNN Architecture" src={cnnArchitecture}/>
                         <p className="ml-2">Fig. 3. The architecture of the proposed CNN model.</p>
@@ -132,7 +139,7 @@ export const AntiCopyPasterPage = () => {
 
                     <h2 ref={modelEvaluationRef} className="text-2xl font-bold">Evaluation of Proposed Model:</h2>
 
-                    <p className="mt-[35px] mb-[35px]">We compared performance with 4 other ML classifiers: Random forest (RF), support vector machine (SVM), Naive Bayes (NB), and Logistic Regression (LR), since performances were competitive in similar binary classification problems. Using out-of-sample bootstrap validation, for balance between bias and variance in comparison to single-repetition holdout validation: </p>
+                    <p className="mt-[35px] mb-[35px]">We compared performance with 4 other ML classifiers: Random forest (RF), support vector machine (SVM), Naive Bayes (NB), and Logistic Regression (LR), since performances were competitive in similar binary classification problems. Using out-of-sample bootstrap validation, for balance between bias and variance in comparison to single-repetition holdout validation, we found these results: </p>
 
                     <div className="mb-[35px] mx-[50px]">
                         <img className="shadow-sm" alt="AntiCopyPaster Model Metrics" src={modelMetrics}/>
@@ -143,7 +150,7 @@ export const AntiCopyPasterPage = () => {
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
                     <h1 ref={refactorLauncherRef} className="page-sub-header mb-[35px]">Refactoring Launcher:</h1>
-                    <p className="mt-[35px] mb-[35px]">The Refactoring Launcher first checks if pasted code fragment can be extracted into separate method without compilation errors. If so, send a notification to user in IDE, informing them of a extraction recommendation. If user views recommendation, Refactoring Launcher passes duplicate fragment as an input into IDE’s built-int extract method api and initiates preview window, where the user can accept as is, rename the new extract method, or cancel process</p>
+                    <p className="mt-[35px] mb-[35px]">The Refactoring Launcher first checks if a pasted code fragment can be extracted into separate method without compilation errors. If so, it sends a notification to user in the IDE, informing them of a extraction recommendation. If user chooses to view the recommendation, <strong>Refactoring Launcher</strong> passes the duplicate fragment to the IDE’s built-in extract method api as an input and initiates a preview window, where the user can accept the extraction as is, rename the new extract method, or cancel the entire process.</p>
                    
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
@@ -155,7 +162,7 @@ export const AntiCopyPasterPage = () => {
                         <img className="shadow-sm" alt="AntiCopyPaster Settings" src={settings}/>
                         <p className="ml-2">Fig. 5. AntiCopyPaster Settings Page.</p>
                     </div>
-                    <p>Users can choose how many instances of duplicate code are required to trigger a notification, and the delay time between detection and notification, Users can choose between heuristic recommendations or deep learning model recommendations.</p>
+                    <p>Users can choose how many instances of duplicate code are required to trigger a notification, and the delay time between detection and notification. Additionally, users can choose between heuristic recommendations or deep learning model recommendations.</p>
                     <br/>
                     <p>For heuristic recommendations, users can measure and compare 4 metrics for detection:</p>
                     <ul className="list-disc pl-5  mb-[50px]">
@@ -208,15 +215,16 @@ export const AntiCopyPasterPage = () => {
                     <button onClick={()=>scrollToRef(antiCopyPasterRef)}> 
                         <p className={activeSection === "antiCopyPaster" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>What is AntiCopyPaster?</p>
                     </button>
+                    <button onClick={()=>scrollToRef(howExtractionWorksRef)}> 
+                        <p className={activeSection === "howExtractionWorks" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>How does Extraction Work in AntiCopyPaster?</p>
+                    </button>
                     <button onClick={()=>scrollToRef(dupDetectCodeAnalysisRef)}> 
-                        <p className={activeSection === "dupDetectCodeAnalysis" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Duplicate Detection and Code Analysis</p>
+                        <p className={activeSection === "dupDetectCodeAnalysis" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Duplicate Detector and Code Analyzer</p>
                     </button>
                     <button onClick={()=>scrollToRef(methodExtractionRef)}> 
-                        <p className={activeSection === "methodExtraction" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Method Extraction</p>
+                        <p className={activeSection === "methodExtraction" ? "text-left mb-1 text-blue-600": "text-left mb-1"}>Method Extractor</p>
                     </button>
-                    <button onClick={()=>scrollToRef(howExtractionWorksRef)}> 
-                        <p className={activeSection === "howExtractionWorks" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>How does Extraction Work in AntiCopyPaster?</p>
-                    </button>
+                    
                     <button onClick={()=>scrollToRef(extractionModelRef)}> 
                         <p className={activeSection === "extractionModel" ? "text-left mb-1 ml-5 text-blue-600": "text-left mb-1 ml-5"}>Developing the Binary Classification Model</p>
                     </button>
