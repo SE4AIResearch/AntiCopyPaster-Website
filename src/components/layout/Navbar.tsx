@@ -4,6 +4,8 @@ import { RiFilePaper2Line } from "react-icons/ri";
 import { MdOutlineInbox } from "react-icons/md";
 import { HiOutlineTerminal } from "react-icons/hi";
 import { MdMenu } from "react-icons/md";
+import { RiHome3Line } from "react-icons/ri";
+
 import ContactModal from "../ContactModal.tsx";
 import { useState } from "react";
 
@@ -58,6 +60,14 @@ export const Navbar = () => {
                 <div className="flex flex-row gap-2 items-center">
                   <MdOutlineInbox />
                   <span>AntiCopyPaster</span>
+                </div>
+              </Link>
+            </li>
+            <li className="topnav-li">
+              <Link to="/community">
+                <div className="flex flex-row gap-2 items-center">
+                <RiHome3Line />
+                <span>Community</span>
                 </div>
               </Link>
             </li>

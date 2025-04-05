@@ -8,6 +8,7 @@ import { DocsNotFound } from "./components/layout/docs/DocsNotFound";
 import "flowbite";
 import { ExtractMethodPage } from "./pages/ExtractMethodPage";
 import { AntiCopyPasterPage } from "./pages/AntiCopyPasterPage";
+import {CommunityPage} from "./pages/CommunityPage"
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route element={<DefaultLayout />}>
           <Route path="/anticopypaster" element={<AntiCopyPasterPage />} />
+        </Route>
+        <Route element={<DefaultLayout />}>
+          <Route path="/community" element={<CommunityPage />} />
         </Route>
         <Route element={<DocsLayout />}>
           {docsMenus.map((docsMenu, index) => (

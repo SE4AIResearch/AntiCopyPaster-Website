@@ -123,13 +123,13 @@ export const AntiCopyPasterPage = () => {
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
                     
-                    <h1 ref={methodExtractionRef} className="page-sub-header mb-[35px]">Method Extractor:</h1>
+                    <h1 ref={methodExtractionRef} className="page-header mb-[5px]">Method Extractor:</h1>
 
                     <p className=" mt-[35px] mb-[35px]">The Method Extractor takes the metric vector as input, and feeds it to the pre-trained model in order to make the binary decision of whether this code fragment is similar to the ones that have been previously refactored in real projects. If the classifier confirms the refactoring, then <strong>Refactoring Launcher</strong> is called.</p>
 
                     
                     
-                    <h2 ref={extractionModelRef} className="text-2xl font-bold">Developing the Binary Classification Model:</h2>
+                    <h2 ref={extractionModelRef} className="page-sub-header font-bold">Developing the Binary Classification Model:</h2>
 
                     <p className=" mt-[35px] mb-[35px]">First, a training dataset consisting of 9,471 code fragments was mined from the 13 mature, well-defined projects from Apache Software Foundations. RefactoringMiner v2.0 was used to identify methods that underwent Extract Method refactorings, serving as positive examples. For negative examples, methods eligible for Extract Method refactoring were first identified. These methods were then ranked based on a scoring formula inspired by Haas and Hummel, using the bottom 95%, methods considered less likely to be extracted. A set of 78 extensively used metrics from previous studies was defined to identify patterns in the samples, and the binary classification model, based on a Convolutional Neural Network (CNN), was trained using these metrics as inputs to distinguish whether duplicate code is likely to be extracted or not.</p>
                     <div className="mb-[35px]">
@@ -137,7 +137,7 @@ export const AntiCopyPasterPage = () => {
                         <p className="ml-2">Fig. 3. The architecture of the proposed CNN model.</p>
                     </div>
 
-                    <h2 ref={modelEvaluationRef} className="text-2xl font-bold">Evaluation of Proposed Model:</h2>
+                    <h2 ref={modelEvaluationRef} className="page-sub-header font-bold">Evaluation of Proposed Model:</h2>
 
                     <p className="mt-[35px] mb-[35px]">We compared performance with 4 other ML classifiers: Random forest (RF), support vector machine (SVM), Naive Bayes (NB), and Logistic Regression (LR), since performances were competitive in similar binary classification problems. Using out-of-sample bootstrap validation, for balance between bias and variance in comparison to single-repetition holdout validation, we found these results: </p>
 
@@ -149,15 +149,15 @@ export const AntiCopyPasterPage = () => {
 
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
-                    <h1 ref={refactorLauncherRef} className="page-sub-header mb-[35px]">Refactoring Launcher:</h1>
+                    <h1 ref={refactorLauncherRef} className="page-header mb-[35px]">Refactoring Launcher:</h1>
                     <p className="mt-[35px] mb-[35px]">The Refactoring Launcher first checks if a pasted code fragment can be extracted into separate method without compilation errors. If so, it sends a notification to user in the IDE, informing them of a extraction recommendation. If user chooses to view the recommendation, <strong>Refactoring Launcher</strong> passes the duplicate fragment to the IDE’s built-in extract method api as an input and initiates a preview window, where the user can accept the extraction as is, rename the new extract method, or cancel the entire process.</p>
                    
                     <hr className="border-t-2 border-gray-300 mt-[100px] mb-[75px] w-[65%] mx-auto"/>
 
-                    <h1 ref={customDetectionRef} className="page-sub-header">Customizing Detection Rules:</h1>
+                    <h1 ref={customDetectionRef} className="page-header">Customizing Detection Rules:</h1>
                     <p className="mt-[35px] mb-[35px]">In AntiCopyPaster 2.0+, we give users the ability to define what characteristics of duplicate code that they want to be refactored.</p>
                     
-                    <h2 className="text-2xl font-bold mb-[35px]">Settings Page:</h2>
+                    <h2 className="page-sub-header font-bold mb-[35px]">Settings Page:</h2>
                     <div className="mb-[35px] mx-[100px]">
                         <img className="shadow-sm" alt="AntiCopyPaster Settings" src={settings}/>
                         <p className="ml-2">Fig. 5. AntiCopyPaster Settings Page.</p>
@@ -172,7 +172,7 @@ export const AntiCopyPasterPage = () => {
                         <li>Size: how large the code segment is</li>
                     </ul>
 
-                    <h2 className="text-2xl font-bold mb-[35px]">Advanced Settings Page:</h2>
+                    <h2 className="page-sub-header font-bold mb-[35px]">Advanced Settings Page:</h2>
                     <p>Can customize each of the 4 metrics:</p>
                     <ul className="list-disc pl-5  mb-[200px]">
                         <li>Keywords: choose between total keyword count and keyword density, and choose specific keywords</li>
