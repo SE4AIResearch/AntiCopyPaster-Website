@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+
 interface PublicationCardProps {
   title: string;
   docsUrl: string;
@@ -22,15 +23,15 @@ export const PublicationCard = ({
     <div className="py-6 px-8 bg-slate-200 rounded-xl">
       <p className="text-[1.15rem]">{title}</p>
       <div className="mt-4 flex flex-row gap-2">
-        <Link to={docsUrl} target="_blank">
+        {docsUrl !== '' && <Link to={docsUrl} target="_blank">
           <button className="publication-redirect-button">Publication</button>
-        </Link>
-        <Link to={preprintUrl} target="_blank">
+        </Link>}
+       {preprintUrl !== '' && <Link to={preprintUrl} target="_blank">
           <button className="publication-redirect-button">Preprint</button>
-        </Link>
-        <Link to={datasetUrl} target="_blank">
+        </Link>}
+        {datasetUrl !== '' && <Link to={datasetUrl} target="_blank">
           <button className="publication-redirect-button">Dataset</button>
-        </Link>
+        </Link>}
         <button
           className="publication-redirect-button"
           onClick={() => setCitationIndex(index)}
