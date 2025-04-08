@@ -19,7 +19,7 @@ interface Contributor {
   }
   
   interface PastContributors {
-    [key: string]: Contributor[]; // Index signature
+    [key: string]: Contributor[]; 
     "Stevens Institute of Technology": Contributor[];
     "Rochester Institute of Technology": Contributor[];
     "HSE University": Contributor[];
@@ -68,7 +68,7 @@ export const CommunityPage = () => {
             <div className="flex mb-[200px]">
 
                 <div className="w-1/2">
-                    <h2 className="text-xl font-bold mb-[20px]">Current Contributors:</h2>
+                    <h2 className="text-2xl font-bold mb-[20px]">Current Contributors:</h2>
                     {currentContributors.map((contributor, i) => {
                         return (<div className="mb-[20px]" key={i}>
                             <p className="text-xl">{contributor.name}</p>
@@ -77,7 +77,7 @@ export const CommunityPage = () => {
                     })}
                 </div>
                 <div className="w-1/2">
-                    <h2 className="text-xl font-bold mb-[20px]">Current Contributors:</h2>
+                    <h2 className="text-2xl font-bold mb-[20px]">Past Contributors:</h2>
 
                     {Object.keys(pastContributors).map((key, i) => (
                         <div className="mb-[20px]" key={i}>
