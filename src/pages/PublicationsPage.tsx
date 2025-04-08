@@ -8,7 +8,16 @@ const publications: Array<{
   preprintUrl: string;
   datasetUrl: string;
   citation: string;
+
 }> = [
+  {
+    title:
+      "AlOmar, E. A., Ashkenas, J., Feliciano, R., Angelakos, M., Haralamppopoulos, D., Qian, X, Mkaouer, M. W., Ouni, A, 2025. AntiCopyPaster: just-in-time clone refactoring. (Under review).",
+    docsUrl: "",
+    preprintUrl: "",
+    datasetUrl: "https://refactorings.github.io/anti-copy-paster-dataset/",
+    citation: '(Under review)'
+  },
   {
     title: "AlOmar, E.A, Knobloch, B., Kain, T., Kalish, C., Mkaouer, M.W., Ouni A. 2024, May. AntiCopyPaster 2.0: Whitebox just-in-time code duplicates extraction. In Proceedings of the 2024 IEEE/ACM 46th International Conference on Software Engineering: Companion Proceedings (pp. 84-88).",
     docsUrl: "https://dl.acm.org/doi/abs/10.1145/3639478.3640035",
@@ -69,7 +78,6 @@ const publications: Array<{
   year={2022}
 }`,
   },
-  
 ];
 export const PublicationsPage = () => {
 
