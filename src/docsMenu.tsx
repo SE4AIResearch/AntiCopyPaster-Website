@@ -3,6 +3,7 @@ import { AboutDocs } from "./components/layout/docs/pages/AboutDocs";
 import { GettingStartedDocs } from "./components/layout/docs/pages/GettingStartedDocs";
 import { ReleasesDocs } from "./components/layout/docs/pages/ReleasesDocs";
 import { AdvancedSettingDocs } from "./components/layout/docs/pages/AdvancedSettingDocs";
+import AlgorithmsDocs from "./components/layout/docs/pages/AlgorithmsDocs";
 
 export interface DocsMenu {
   title: string;
@@ -30,5 +31,10 @@ export const docsMenus: Array<DocsMenu> = [
     title: "Advanced Settings",
     url: "advanced-settings",
     content: <AdvancedSettingDocs />,
+  },
+  {
+    title: "Algorithms",
+    url: "algorithms",
+    content: <AlgorithmsDocs />,
   },
 ];
