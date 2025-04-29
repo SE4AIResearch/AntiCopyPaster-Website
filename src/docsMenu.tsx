@@ -4,7 +4,7 @@ import { GettingStartedDocs } from "./components/layout/docs/pages/GettingStarte
 import { ReleasesDocs } from "./components/layout/docs/pages/ReleasesDocs";
 import { AdvancedSettingDocs } from "./components/layout/docs/pages/AdvancedSettingDocs";
 import AlgorithmsDocs from "./components/layout/docs/pages/AlgorithmsDocs";
-
+import ModelDocs from "./components/layout/docs/pages/ModelDocs"
 export interface DocsMenu {
   title: string;
   url: string;
@@ -36,5 +36,10 @@ export const docsMenus: Array<DocsMenu> = [
     title: "Algorithms",
     url: "algorithms",
     content: <AlgorithmsDocs />,
+  },
+  {
+    title: "Model",
+    url: "model",
+    content: <ModelDocs />,
   },
 ];
