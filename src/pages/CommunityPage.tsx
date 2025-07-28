@@ -11,7 +11,9 @@ const currentContributors = [
     { name: "Ali Ouni, PhD", institution: "École de technologie supérieure"},
     { name: "Timofey Bryksin, PhD", institution: "JetBrains Research"},
     { name: "Yaroslav Golubev", institution: "JetBrains Research"},
-    { name: "Zarina Kurbatova", institution: "JetBrains Research"}
+    { name: "Zarina Kurbatova", institution: "JetBrains Research"},
+    { name: "Xing Qian",institution: "Stevens Institute of Technology"},
+    { name: "Cecilia Esteban",institution: "Stevens Institute of Technology"}
 ]
 
 interface Contributor {
