@@ -12,11 +12,17 @@ const publications: Array<{
 }> = [
   {
     title:
-      "AlOmar, E. A., Ashkenas, J., Feliciano, R., Angelakos, M., Haralamppopoulos, D., Qian, X, Mkaouer, M. W., Ouni, A, 2025. AntiCopyPaster: just-in-time clone refactoring. (Under review).",
-    docsUrl: "",
-    preprintUrl: "",
+      "AlOmar, E. A., Ashkenas, J., Feliciano, R., Angelakos, M., Haralamppopoulos, D., Qian, X, Mkaouer, M. W., Ouni, A, 2025. AntiCopyPaster 3.0: just-in-time clone refactoring. ACM Transactions on Software Engineering and Methodology (pp. 1-52).",
+    docsUrl: "https://dl.acm.org/doi/pdf/10.1145/3749100",
+    preprintUrl: "https://dl.acm.org/doi/pdf/10.1145/3749100",
     datasetUrl: "https://refactorings.github.io/anti-copy-paster-dataset/",
-    citation: '(Under review)'
+    citation: `@article{alomar2025anticopypaster,
+  title={AntiCopyPaster 3.0: Just-in-Time Clone Refactoring},
+  author={AlOmar, Eman Abdullah and Ashkenas, Jacob and Feliciano, Robert and Angelakos, Matthew and Haralamppopoulos, Dimitrios and Qian, Xing and Mkaouer, Mohamed Wiem and Ouni, Ali},
+  journal={ACM Transactions on Software Engineering and Methodology},
+  year={2025},
+  publisher={ACM New York, NY}
+}`
   },
   {
     title: "AlOmar, E.A, Knobloch, B., Kain, T., Kalish, C., Mkaouer, M.W., Ouni A. 2024, May. AntiCopyPaster 2.0: Whitebox just-in-time code duplicates extraction. In Proceedings of the 2024 IEEE/ACM 46th International Conference on Software Engineering: Companion Proceedings (pp. 84-88).",
