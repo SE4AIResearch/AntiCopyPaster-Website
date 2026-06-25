@@ -25,194 +25,205 @@ interface algoObject {
     code?: string
 }
 
-const detectionAgentAlgorithm = `Algorithm: Detection Agent
+const detectionAgentAlgorithm = `Input: P, the project context, f, the file name, S, the file source, F, the pasted code fragment, L, the LLM caller
+Output: R, the detected clone groups with their source ranges
+if F is empty then
+    return NoClones(f)
+end
+(l_s, l_e) ← findSnippetLineRange(S, F)
+panelists ← []
+foreach p ∈ {P1, P2, P3} do
+    Q_p ← buildPanelistPrompt(p, P, f, S, F, l_s, l_e)
+    A_p ← L(Q_p)
+    D_p ← parseDetection(A_p, f)
+    D_p ← normalizeDetection(D_p, f, S, F, l_s, l_e)
+    panelists.add(p, A_p, D_p)
+end
+Q_c ← buildCuratorPrompt(f, S, F, l_s, l_e, panelists)
+A_c ← L(Q_c)
+D_c ← parseDetection(A_c, f)
+if D_c is not null then
+    R ← normalizeDetection(D_c, f, S, F, l_s, l_e)
+else
+    R ← mergePanelists(panelists, f)
+end
+if R is null or R.clones is empty then
+    R ← psiFallbackDetect(P, S, F, f)
+end
+if R is null or R.clones is empty then
+    return NoClones(f)
+end
+R.clones ← resolveCloneRanges(P, f, S, R.clones)
+R.clones ← mergeOverlappingGroups(S, R.clones)
+return FoundClones(f, R.clones)`;
 
-Input:
-  project context proj
-  file name f
-  file source S
-  pasted snippet S_snip
-  LLM caller L(...)
+const refactoringAgentAlgorithm = `Input: P, the project context, f, the file name, S, the file source, C, the selected clone group, G, the RAG guidance, L, the LLM caller
+Output: RR, the selected refactoring candidate
+if C is null then
+    return Failed(f, "clone is null")
+end
+Q ← buildRefactorPrompt(f, S, C, G)
+candidates ← []
+foreach p ∈ {P1, P2, P3} do
+    Q_p ← buildRefactorPanelistPrompt(p, Q)
+    A_p ← L(Q_p)
+    O_p ← parseRefactorCandidate(A_p, f, S, C)
+    candidates.add(p, A_p, O_p)
+end
+Q_c ← buildRefactorCuratorPrompt(f, S, C, candidates)
+A_c ← L(Q_c)
+selection ← parseCuratorSelection(A_c)
+if selection is valid and candidates[selection.panelist] is applicable then
+    best ← candidates[selection.panelist]
+else
+    best ← highestScoringApplicable(candidates)
+end
+if best is null or best.source is empty then
+    return Failed(f, "no applicable refactoring candidate")
+end
+return Refactored(f, best.source, best.panelist, selection.summary)`;
 
-Output:
-  detection result R with status, file, and clones
+const usefulnessCheckerAlgorithm = `Input: P, the project context, f, the file name, S_b, the original source, S_a, the refactored source, C, the clone group, H, the target method hints, L, the LLM caller
+Output: U, the usefulness decision and its reasons
+if S_a is empty or S_a = S_b then
+    return NotUseful([INVALID_OR_UNCHANGED_SOURCE])
+end
+if hasSyntaxErrors(P, f, S_a) then
+    return Unavailable([PSI_PARSE_FAILED])
+end
+panelists ← []
+foreach p ∈ {P1, P2, P3} do
+    Q_p ← buildUsefulnessPanelistPrompt(p, f, S_b, S_a, C, H)
+    A_p ← L(Q_p)
+    U_p ← parseUsefulness(A_p)
+    panelists.add(p, A_p, U_p)
+end
+Q_c ← buildUsefulnessCuratorPrompt(f, S_b, S_a, C, H, panelists)
+A_c ← L(Q_c)
+U ← parseUsefulness(A_c)
+if U is null then
+    U ← mergePanelists(panelists)
+end
+if U.status = useful then
+    return U
+end
+B ← parseJavaFile(P, f, S_b)
+A ← parseJavaFile(P, f, S_a)
+if B is null or A is null then
+    return Unavailable([PSI_PARSE_FAILED])
+end
+T ← resolveTargetMethods(B, C, H)
+M ← findAddedMethods(B, A)
+if ∃ h ∈ M such that occurrences(C, T) are replaced by calls to h then
+    return Useful([EXTRACT_METHOD_CONFIRMED])
+end
+if duplicateLogicRemains(A, C) then
+    return NotUseful([INCOMPLETE_REFACTORING_DETECTED])
+end
+if cloneRemovedWithoutExtraction(B, A, C) then
+    return NotUseful([DIRECT_CLONE_REMOVAL_DETECTED])
+end
+if helperAddedWithoutCloneReplacement(A, C) then
+    return NotUseful([EXTRACTION_WITHOUT_CLONE_REPLACEMENT_DETECTED])
+end
+return NotUseful([EXTRACT_METHOD_NOT_FOUND])`;
 
-if S_snip is empty:
-    return { status: no_clones, file: f, clones: [] }
+const crossFileDetectionAgentAlgorithm = `Input: P, the project context, F, the selected files, A, the pasted snippet anchor, L, the LLM caller
+Output: R, the detected cross-file clone groups
+if |F| < 2 then
+    return NoClones(F)
+end
+S ← readCrossFileSources(P, F)
+if |S| < 2 then
+    return NoClones(F)
+end
+anchors ← resolvePastedSnippetAnchors(S, A)
+if A is not empty and anchors is empty then
+    return NoClones(F)
+end
+panelists ← []
+foreach p ∈ {P1, P2, P3} do
+    Q_p ← buildCrossFileDetectionPanelistPrompt(p, S, A)
+    A_p ← L(Q_p)
+    D_p ← parseCrossFileDetection(A_p, S, A)
+    D_p ← verifyOccurrences(D_p, S)
+    panelists.add(p, A_p, D_p)
+end
+Q_c ← buildCrossFileDetectionCuratorPrompt(S, A, panelists)
+A_c ← L(Q_c)
+D_c ← parseCrossFileDetection(A_c, S, A)
+if D_c is not null then
+    R ← D_c
+else
+    R ← mergeCrossFilePanelists(panelists)
+end
+R.clones ← keepClonesSpanningAtLeastTwoFiles(R.clones)
+if A is not empty then
+    R.clones ← keepClonesContainingAnchor(R.clones, anchors)
+end
+if R.clones is empty then
+    return NoClones(F)
+end
+C ← selectBestCrossFileClone(R)
+return FoundCrossFileClones(C)`;
 
-(l_s, l_e) = findSnippetLineRange(S, S_snip)
+const crossFileRefactoringAgentAlgorithm = `Input: P, the project context, S, the selected file sources, C, the selected cross-file clone, B, retry feedback, E, the previous result, L, the LLM caller
+Output: RR, the selected cross-file refactoring plan
+if C is null or C touches fewer than two files then
+    return Failed("no valid cross-file clone")
+end
+X ← buildCrossFileRefactorContext(P, S, C)
+Q ← buildCrossFileRefactorPrompt(P, S, C, B, E, X)
+candidates ← []
+foreach p ∈ {P1, P2, P3} do
+    Q_p ← buildCrossFileRefactorPanelistPrompt(p, Q)
+    A_p ← L(Q_p)
+    O_p ← parseCrossFileRefactorResult(A_p, P, S, C, X)
+    candidates.add(p, A_p, O_p)
+end
+Q_c ← buildCrossFileRefactorCuratorPrompt(S, C, candidates, X)
+A_c ← L(Q_c)
+selection ← parseCrossFilePanelistSelection(A_c)
+best ← resolveSelectedRefactorPanelist(selection, candidates)
+if best is null or best.result is not parsed then
+    return Failed("no applicable cross-file refactoring candidate")
+end
+RR ← best.result
+RR.sharedHelper ← normalizeSharedHelperPlan(P, S, C, RR.sharedHelper, X)
+RR.files ← applyOccurrenceReplacements(S, C, RR)
+if helperMissing(RR) or anyOccurrenceUnreplaced(C, RR) then
+    return Failed("shared helper or occurrence replacement is incomplete")
+end
+return CrossFileRefactored(RR.changedFiles, RR.sharedHelper, best.panelist, selection.summary)`;
 
-PanelistResults = []
-
-for p in {P1, P2, P3}:
-    P_p = buildPanelistDetectionPrompt(p, proj, S, S_snip, f, l_s, l_e)
-    raw_p = L(P_p)
-    R_p = parseDetectionResult(raw_p, f)
-    R_hat_p = normalizeDetectionResult(R_p, f, S, S_snip, l_s, l_e)
-    PanelistResults.add(p, raw_p, R_p, R_hat_p)
-
-P_c = buildDetectionCuratorPrompt(f, S, S_snip, l_s, l_e, PanelistResults)
-raw_c = L(P_c)
-R_c = parseDetectionResult(raw_c, f)
-
-if R_c != null:
-    R = normalizeDetectionResult(R_c, f, S, S_snip, l_s, l_e)
-else:
-    R = mergePanelistResults(PanelistResults, f)
-
-if R == null or R.clones is empty:
-    R = PsiFallbackDetect(proj, S, S_snip, f)
-
-if R == null or R.clones is empty:
-    return { status: no_clones, file: f, clones: [] }
-
-R.clones = resolveCloneRangesWithPsi(proj, f, S, R.clones)
-R.clones = mergeOverlappingCloneGroups(S, R.clones)
-
-R.status = found_clones
-R.file = f
-return R`;
-
-const refactoringAgentAlgorithm = `Algorithm: Refactoring Agent
-
-Input:
-  project context proj
-  file name f
-  file source S
-  selected clone group C
-  refactoring RAG guidance RAG_ref
-  LLM caller L_ref(...)
-
-Output:
-  refactor result RR
-
-if C == null:
-    return { status: failed, file: f, newSource: "", message: "clone is null" }
-
-P_base = buildRefactorPrompt(f, S, C, RAG_ref)
-
-PanelistOutcomes = []
-
-for p in {P1, P2, P3}:
-    P_p = buildRefactorPanelistPrompt(p, P_base)
-    raw_p = L_ref(P_p)
-
-    O_p = parseRefactorCandidate(raw_p, f, S, C)
-
-    PanelistOutcomes.add({
-        panelist: p,
-        raw: raw_p,
-        outcome: O_p
-    })
-
-P_c = buildRefactorCuratorPrompt(f, S, C, PanelistOutcomes)
-raw_c = L_ref(P_c)
-
-Selection = parseCuratorSelection(raw_c)
-
-if Selection is valid and Selection.selectedPanelist has applicable newSource:
-    Best = PanelistOutcomes[Selection.selectedPanelist]
-else:
-    Best = highestScoringApplicablePanelist(PanelistOutcomes)
-
-if Best == null or Best.outcome.newSource is empty:
-    return {
-        status: failed,
-        file: f,
-        newSource: "",
-        message: "no applicable refactoring candidate"
-    }
-
-return {
-    status: refactored,
-    file: f,
-    newSource: Best.outcome.newSource,
-    selectedPanelistId: Best.panelist,
-    curatorSummary: Selection.summary,
-    curatorFeedback: Selection.feedback,
-    curatorMatchedCategories: Selection.matchedCategories,
-    message: "refactoring candidate selected"
-}`;
-
-const usefulnessCheckerAlgorithm = `Algorithm: Usefulness Checker
-
-Input:
-  project context proj
-  file name f
-  original source S_before
-  refactored source S_after
-  target clone group C
-  target method hints H
-  LLM caller L_use(...)
-
-Output:
-  usefulness result U
-
-if S_after is empty or S_after == S_before:
-    return { status: not_useful, reasons: [INVALID_OR_UNCHANGED_SOURCE] }
-
-if hasSyntaxErrors(proj, f, S_after):
-    return { status: unavailable, reasons: [PSI_PARSE_FAILED] }
-
-PanelistResults = []
-
-for p in {P1, P2, P3}:
-    P_p = buildUsefulnessPanelistPrompt(p, f, S_before, S_after, C, H)
-    raw_p = L_use(P_p)
-    R_p = parseUsefulnessResult(raw_p)
-    PanelistResults.add(p, raw_p, R_p)
-
-P_c = buildUsefulnessCuratorPrompt(
-          f, S_before, S_after, C, H, PanelistResults
-      )
-
-raw_c = L_use(P_c)
-U_llm = parseUsefulnessResult(raw_c)
-
-if U_llm == null:
-    U_llm = mergePanelistUsefulnessResults(PanelistResults)
-
-if U_llm.status == useful:
-    return U_llm
-
-BeforePsi = parseJavaFile(proj, f, S_before)
-AfterPsi = parseJavaFile(proj, f, S_after)
-
-if BeforePsi == null or AfterPsi == null:
-    return { status: unavailable, reasons: [PSI_PARSE_FAILED] }
-
-TargetMethods = resolveTargetMethods(BeforePsi, C, H)
-AddedMethods = findAddedMethods(BeforePsi, AfterPsi)
-
-if exists helper h in AddedMethods such that
-   target clone occurrences are replaced by calls to h:
-    return {
-        status: useful,
-        reasons: [EXTRACT_METHOD_CONFIRMED]
-    }
-
-if target clone logic still remains duplicated:
-    return {
-        status: not_useful,
-        reasons: [INCOMPLETE_REFACTORING_DETECTED]
-    }
-
-if clone was deleted or replaced without shared extraction:
-    return {
-        status: not_useful,
-        reasons: [DIRECT_CLONE_REMOVAL_DETECTED]
-    }
-
-if helper was added but clone bodies were not replaced:
-    return {
-        status: not_useful,
-        reasons: [EXTRACTION_WITHOUT_CLONE_REPLACEMENT_DETECTED]
-    }
-
-return {
-    status: not_useful,
-    reasons: [EXTRACT_METHOD_NOT_FOUND]
-}`;
+const crossFileUsefulnessCheckerAlgorithm = `Input: P, the project context, S, the selected file sources, C, the selected cross-file clone, RR, the refactor result, L, the LLM caller
+Output: U, the cross-file usefulness decision and its feedback
+if RR is null or RR has no changed files then
+    return NotUseful([INVALID_OR_UNCHANGED_SOURCE])
+end
+B ← buildCrossFileBeforeDiffBundle(S, RR)
+A ← buildCrossFileDiffBundle(S, RR)
+I ← buildCrossFileUsefulnessInput(S, C, RR, B, A)
+panelists ← []
+foreach p ∈ {P1, P2, P3} do
+    Q_p ← buildUsefulnessPanelistPrompt(p, I)
+    A_p ← L(Q_p)
+    U_p ← parseUsefulness(A_p)
+    panelists.add(p, A_p, U_p)
+end
+Q_c ← buildUsefulnessCuratorPrompt(I, panelists)
+A_c ← L(Q_c)
+U ← parseUsefulness(A_c)
+if U is null then
+    U ← mergePanelists(panelists)
+end
+if U is not parsed then
+    return Unavailable([USEFULNESS_PARSE_FAILED])
+end
+if U.status = useful then
+    return U
+end
+return NotUseful(U.reasons, U.feedback)`;
 
 const algos : algoObject[] = [
     {title: "MatchState", description: "", image: matchState},
@@ -232,22 +243,66 @@ const algos : algoObject[] = [
     {title: "buildMethodText", description: "", image: buildMethodText},
     {title: "generateMethodCall", description: "", image: generateMethodCall},
     {title: "Extraction Task", description: "", image: extractionTask},
-    {title: "Detection Agent", description: "", code: detectionAgentAlgorithm},
-    {title: "Refactoring Agent", description: "", code: refactoringAgentAlgorithm},
-    {title: "Usefulness Checker", description: "", code: usefulnessCheckerAlgorithm},
+    {title: "Multi-Agent Algorithms", description: ""},
+    {title: "Single File Detection Agent", description: "", code: detectionAgentAlgorithm},
+    {title: "Single File Refactoring Agent", description: "", code: refactoringAgentAlgorithm},
+    {title: "Single File Usefulness Checker", description: "", code: usefulnessCheckerAlgorithm},
+    {title: "Cross File Detection Agent", description: "", code: crossFileDetectionAgentAlgorithm},
+    {title: "Cross File Refactoring Agent", description: "", code: crossFileRefactoringAgentAlgorithm},
+    {title: "Cross File Usefulness Checker", description: "", code: crossFileUsefulnessCheckerAlgorithm},
 ]
+
+const renderAlgorithmLine = (line: string, index: number) => {
+    if (line.trim() === "") {
+        return <span key={index} className="block h-[1.3em]" aria-hidden="true" />
+    }
+
+    const headingMatch = line.match(/^(Algorithm|Input|Output):(.*)$/)
+    if (headingMatch) {
+        return (
+            <span key={index} className="block">
+                <strong>{headingMatch[1]}:</strong>{headingMatch[2]}
+            </span>
+        )
+    }
+
+    const keywordMatch = line.match(/^(\s*)(if|else|foreach|for|return|end)(\b.*)?$/)
+    if (keywordMatch) {
+        return (
+            <span key={index} className="block">
+                <span>{keywordMatch[1]}</span>
+                <strong>{keywordMatch[2]}</strong>
+                {keywordMatch[3]}
+            </span>
+        )
+    }
+
+    return <span key={index} className="block">{line}</span>
+}
+
+const AlgorithmText = ({ code }: { code: string }) => {
+    return (
+        <div className="algorithm-paper w-full md:w-[75%] mx-auto overflow-x-auto">
+            <pre>{code.split("\n").map(renderAlgorithmLine)}</pre>
+        </div>
+    )
+}
 
 const AlgorithmsDocs = () => {
     return <div>
         <h1 className="docs-header">Algorithms</h1>
         {algos.map( (algoObj :algoObject) => {
+            if (algoObj.title === "Multi-Agent Algorithms") {
+                return <h2 key={algoObj.title} className="mt-14 mb-2 text-center text-3xl font-bold">{algoObj.title}</h2>
+            }
+
             return <div key={algoObj.title}>
                 <h2 className="mt-10 mb-4 text-[22px] font-semibold">{algoObj.title}:</h2>
                 {algoObj.image && (
-                    <img src={algoObj.image} alt={algoObj.title} className="w-[75%] h-auto mx-auto"/>
+                    <img src={algoObj.image} alt={algoObj.title} className="w-full md:w-[75%] h-auto mx-auto"/>
                 )}
                 {algoObj.code && (
-                    <pre className="w-full max-w-[900px] mx-auto overflow-x-auto rounded-md border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-900">{algoObj.code}</pre>
+                    <AlgorithmText code={algoObj.code}/>
                 )}
             </div>
 
